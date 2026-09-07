@@ -533,3 +533,30 @@ footer{padding:42px 20px;color:#60758e;font-size:.84rem}
   .portal-content .formgrid{grid-template-columns:1fr}
   .portal-content .row{align-items:flex-start;flex-direction:column}
 }
+
+
+/* PWA — botão de instalação integrado ao cabeçalho existente. */
+.pwa-install-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:36px;
+  padding:7px 11px;
+  border:1px solid #c8e7e2;
+  border-radius:10px;
+  background:#edf8f6;
+  color:#08786d;
+  font:inherit;
+  font-size:.78rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .16s ease, background .16s ease, box-shadow .16s ease;
+}
+.pwa-install-btn:hover{transform:translateY(-1px);background:#e2f5f1;box-shadow:0 5px 14px rgba(8,120,109,.12)}
+.pwa-install-btn:focus-visible{outline:3px solid rgba(8,120,109,.2);outline-offset:2px}
+.pwa-install-btn[hidden]{display:none}
+@media(max-width:560px){
+  .pwa-install-btn span:last-child{display:none}
+  .pwa-install-btn{width:38px;min-width:38px;padding:7px;font-size:1.15rem}
+}

@@ -1,10 +1,12 @@
-const CACHE_NAME = 'portal-jm-static-v2';
+const CACHE_NAME = 'portal-jm-static-v3';
 const STATIC_ASSETS = [
   '/static/css/style.css',
   '/static/js/ui.js',
   '/static/manifest.json',
   '/static/icons/icon-192.png',
-  '/static/icons/icon-512.png'
+  '/static/icons/icon-512.png',
+  '/static/js/pwa.js',
+  '/static/offline.html'
 ];
 
 self.addEventListener('install', (event) => {
@@ -34,7 +36,7 @@ self.addEventListener('fetch', (event) => {
 
   // Pages remain network-first so login, session and database data are always fresh.
   if (request.mode === 'navigate') {
-    event.respondWith(fetch(request));
+    event.respondWith(fetch(request).catch(() => caches.match('/offline.html')));
     return;
   }
 
