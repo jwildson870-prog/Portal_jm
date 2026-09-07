@@ -72,13 +72,21 @@
   const toggle=document.getElementById('menuToggle');
   const close=document.getElementById('sidebarClose');
   const bottom=document.getElementById('bottomMenu');
-  function openMenu(){if(sidebar){sidebar.classList.add('open');overlay&&overlay.classList.add('show');}}
-  function closeMenu(){if(sidebar){sidebar.classList.remove('open');overlay&&overlay.classList.remove('show');}}
-  toggle&&toggle.addEventListener('click',openMenu); bottom&&bottom.addEventListener('click',openMenu); close&&close.addEventListener('click',closeMenu); overlay&&overlay.addEventListener('click',closeMenu);
-  document.querySelectorAll('.side-link').forEach(a=>a.addEventListener('click',()=>{if(window.innerWidth<900) closeMenu();}));
+  function openMenu(){ sidebar?.classList.add('open'); overlay?.classList.add('show'); document.body.classList.add('menu-open'); }
+  function closeMenu(){ sidebar?.classList.remove('open'); overlay?.classList.remove('show'); document.body.classList.remove('menu-open'); }
+  closeMenu();
+  toggle?.addEventListener('click',openMenu);
+  bottom?.addEventListener('click',openMenu);
+  close?.addEventListener('click',closeMenu);
+  overlay?.addEventListener('click',closeMenu);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMenu(); });
+  document.querySelectorAll('.side-link').forEach(a=>a.addEventListener('click',()=>{ if(window.innerWidth<900) closeMenu(); }));
   const search=document.getElementById('menuSearch');
-  search&&search.addEventListener('input',function(){const q=this.value.toLowerCase().trim();document.querySelectorAll('#sidebarNav .side-link').forEach(a=>{a.style.display=(!q||a.innerText.toLowerCase().includes(q))?'flex':'none';});});
-  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));}
+  search?.addEventListener('input',function(){
+    const q=this.value.toLowerCase().trim();
+    document.querySelectorAll('#sidebarNav .side-link').forEach(a=>{ a.style.display=(!q || a.innerText.toLowerCase().includes(q))?'flex':'none'; });
+  });
+  if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{})); }
 })();
 </script>
 </body>
