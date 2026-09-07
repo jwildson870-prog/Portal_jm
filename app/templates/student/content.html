@@ -8,7 +8,7 @@
     {% if content.kind == 'explanation' %}
         <div class="prose">{{ content.body|safe }}</div>
     {% elif content.kind in ['file', 'pdf'] %}
-        <a class="btn" href="{{ url_for('student.arquivo', id=content.id) }}" target="_blank" rel="noopener">ABRIR MATERIAL</a>
+        <a class="btn" href="{{ url_for('student.pdf', id=content.id) if content.kind == 'pdf' else url_for('student.arquivo', id=content.id) }}" target="_blank" rel="noopener">ABRIR MATERIAL</a>
     {% elif content.kind == 'slide' %}
         <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer">ABRIR SLIDES</a>
     {% elif content.kind == 'video' %}

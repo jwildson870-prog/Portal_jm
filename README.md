@@ -51,9 +51,13 @@ Local: SQLite. Produção: PostgreSQL. Exemplo:
 DATABASE_URL=postgresql+psycopg2://usuario:senha@host:5432/banco
 ```
 
-## PDFs
+## Arquivos, imagens e PDFs
 
-No desenvolvimento os PDFs ficam em `uploads/`. Em hospedagem com filesystem efêmero, use armazenamento persistente (disco persistente ou bucket externo). O banco guarda a referência do arquivo, permitindo trocar a camada de armazenamento depois.
+Todos os arquivos enviados (imagens, PDFs, PowerPoint, Word e TXT) são servidos por uma rota do Flask com o MIME correto. O caminho do armazenamento pode ser configurado pela variável `UPLOAD_FOLDER`.
+
+**Importante no Render:** o filesystem normal do serviço é efêmero. Se o banco continuar apontando para um arquivo que foi salvo antes de um redeploy/restart, o link pode retornar 404 porque o arquivo deixou de existir. Para uploads que precisam sobreviver a reinícios, anexe um Persistent Disk e configure `UPLOAD_FOLDER` para um diretório dentro do disco, por exemplo `/var/data/uploads`. O Render documenta que somente os dados escritos dentro do mount path do disco são preservados entre deploys e reinícios.
+
+Se estiver usando um serviço gratuito sem Persistent Disk, os uploads locais não devem ser tratados como armazenamento permanente; nesse caso, use um armazenamento de objetos externo para os materiais.
 
 ## Render
 
