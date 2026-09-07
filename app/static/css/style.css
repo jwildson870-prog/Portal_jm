@@ -155,3 +155,170 @@ footer{text-align:center;padding:35px;color:var(--text-dim)}
 .material-mini{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 0;border-top:1px solid var(--border-soft);color:var(--text)}
 .student-shell{max-width:1120px;margin:0 auto;padding:30px 20px 50px}
 @media(max-width:850px){nav{gap:9px;flex-wrap:wrap}.area-pill{display:none}}
+
+
+/* =========================================================
+   BOTÕES — ACABAMENTO VISUAL DO PORTAL JM
+   Apenas aparência: nenhuma estrutura ou funcionalidade alterada.
+========================================================= */
+.btn,
+button.btn,
+a.btn{
+  border:1px solid transparent;
+  border-radius:10px;
+  padding:11px 17px;
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font:inherit;
+  font-weight:750;
+  line-height:1;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease,
+             border-color .16s ease, filter .16s ease;
+}
+
+.btn:hover,
+button.btn:hover,
+a.btn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+
+.btn:active,
+button.btn:active,
+a.btn:active{
+  transform:translateY(0);
+}
+
+.btn:focus-visible,
+button.btn:focus-visible,
+a.btn:focus-visible{
+  outline:3px solid rgba(99,197,255,.28);
+  outline-offset:2px;
+}
+
+/* Botão principal */
+.btn:not(.secondary):not(.danger),
+.admin-primary{
+  color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border-color:rgba(111,213,255,.25);
+  box-shadow:0 9px 24px rgba(22,119,255,.22);
+}
+
+/* Botões secundários */
+.btn.secondary{
+  color:var(--text);
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--border-soft);
+  box-shadow:0 5px 16px rgba(0,0,0,.16);
+}
+
+.btn.secondary:hover{
+  color:#fff;
+  background:rgba(37,183,255,.12);
+  border-color:rgba(37,183,255,.42);
+  box-shadow:0 8px 20px rgba(0,0,0,.22);
+}
+
+/* Editar — azul com texto branco */
+.list a[href*="edit"],
+.material-actions a[href*="edit"]{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:9px 13px;
+  border-radius:9px;
+  background:linear-gradient(135deg,#2588ff,#1761d8);
+  border:1px solid rgba(103,178,255,.35);
+  color:#fff !important;
+  text-decoration:none;
+  font-weight:750;
+  line-height:1;
+  box-shadow:0 6px 16px rgba(23,97,216,.22);
+  transition:transform .16s ease, filter .16s ease, box-shadow .16s ease;
+}
+
+.list a[href*="edit"]:hover,
+.material-actions a[href*="edit"]:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+  box-shadow:0 9px 20px rgba(23,97,216,.3);
+}
+
+/* Excluir — vermelho */
+.danger{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:9px 13px;
+  margin-left:0;
+  border:1px solid rgba(255,100,100,.28);
+  border-radius:9px;
+  background:linear-gradient(135deg,#ef4444,#c62828);
+  color:#fff;
+  font:inherit;
+  font-weight:750;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(198,40,40,.22);
+  transition:transform .16s ease, filter .16s ease, box-shadow .16s ease;
+}
+
+.danger:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+  box-shadow:0 9px 20px rgba(198,40,40,.3);
+}
+
+/* Ações lado a lado com acabamento uniforme */
+.material-actions{
+  align-items:center;
+}
+
+.material-actions .btn,
+.material-actions .danger{
+  white-space:nowrap;
+}
+
+/* Botões de escolha de fonte continuam com o desenho de cards,
+   mas ganham feedback visual de clique/foco. */
+.source-card:focus-visible{
+  outline:3px solid rgba(99,197,255,.25);
+  outline-offset:2px;
+}
+
+.source-card:active{
+  transform:scale(.985);
+}
+
+/* Botão de sair: discreto, mas com aparência de botão */
+.linkbtn{
+  padding:8px 11px;
+  border-radius:9px;
+  transition:.16s ease;
+}
+
+.linkbtn:hover{
+  background:rgba(255,255,255,.06);
+}
+
+/* Formulários: evita que o botão fique colado ao restante */
+.auth form .btn,
+.inlineform .btn,
+.formgrid .btn{
+  justify-self:start;
+}
+
+@media(max-width:560px){
+  .material-actions .btn,
+  .material-actions .danger{
+    flex:1 1 auto;
+  }
+}
