@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from flask import Flask,render_template
+from flask import Flask,render_template,send_from_directory
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from .extensions import db
@@ -22,6 +22,9 @@ def create_app(test_config=None):
     app.register_blueprint(auth_bp); app.register_blueprint(student_bp); app.register_blueprint(admin_bp)
     @app.get('/')
     def home(): return render_template('index.html')
+    @app.get('/service-worker.js')
+    def service_worker():
+        return send_from_directory(app.static_folder, 'service-worker.js', mimetype='application/javascript')
     @app.errorhandler(403)
     def forbidden(e): return render_template('error.html',message='Acesso negado.'),403
     @app.errorhandler(404)
