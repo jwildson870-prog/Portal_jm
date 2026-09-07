@@ -1,5 +1,1 @@
-{% extends 'base.html' %}
-{% block title %}Usuários · Portal JM{% endblock %}
-{% block content %}
-<section class="admin-shell"><div class="page-head"><div><a class="back-link" href="{{ url_for('admin.dashboard') }}">← Painel</a><span class="eyebrow">ACESSOS</span><h1>Usuários</h1><p>Visualize as contas cadastradas no portal.</p></div></div><div class="list">{% for u in users %}<div class="card row-card"><div><h2 style="font-size:1rem">{{ u.name }}</h2><p>{{ u.email }}</p></div><span class="badge">{{ 'ADMINISTRADOR' if u.is_admin else 'ALUNO' }}</span></div>{% endfor %}</div></section>
-{% endblock %}
+{% extends 'base.html' %}{% block content %}<h1>Usuários</h1><div class="list">{% for u in users %}<div class="card row"><div><b>{{u.name}}</b><p>{{u.email}}</p></div><span class="badge">{{'ADMINISTRADOR' if u.is_admin else 'ALUNO'}}</span></div>{% endfor %}</div>{% endblock %}

@@ -1,5 +1,1 @@
-{% extends 'base.html' %}
-{% block title %}{{ title }} · Portal JM{% endblock %}
-{% block content %}
-<section class="admin-shell"><div class="auth-card" style="margin:20px auto"><a class="back-link" href="{{ url_for('admin.series_list') }}">← Séries</a><span class="eyebrow">ORGANIZAÇÃO</span><h1>{{ title }}</h1><form class="auth-form" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label class="field"><span>Nome</span><input name="name" value="{{ value }}" required></label><button class="btn" type="submit">Salvar alterações</button></form></div></section>
-{% endblock %}
+{% extends 'base.html' %}{% block content %}<div class="auth card"><h1>{{title}}</h1><form method="post"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><label>Nome<input name="name" value="{{value}}" required></label><button class="btn">Salvar</button></form></div>{% endblock %}
