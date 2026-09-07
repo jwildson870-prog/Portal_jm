@@ -1,6 +1,6 @@
 # Portal JM – Química
 
-Sistema educacional em Flask com cadastro, login, sessões, permissões ALUNO/ADMINISTRADOR, CRUD de séries/matérias/conteúdos, explicações, PDFs, slides, vídeo-aulas e Google OAuth opcional.
+Sistema educacional em Flask com cadastro, login, sessões, separação real entre PROFESSOR e ALUNO, quatro turmas oficiais (1º, 2º, 3º e 4º ano), CRUD de séries/matérias/conteúdos, uploads, explicações, PDFs, slides, vídeo-aulas, links externos e Google OAuth opcional.
 
 ## Rodar localmente
 
@@ -21,9 +21,17 @@ python app.py
 
 Acesse `http://127.0.0.1:5000`.
 
-## Administrador
+## Professor / administrador
 
-O sistema cria/atualiza somente um administrador usando as variáveis `ADMIN_EMAIL`, `ADMIN_PASSWORD` e `ADMIN_NAME`. O cadastro público sempre cria ALUNO.
+Por padrão, a conta pré-definida é:
+
+- E-mail: `professor@portaljm.com`
+- Senha: `PortalJM@2026`
+- Nome: `Professor JM`
+
+As variáveis `ADMIN_EMAIL`, `ADMIN_PASSWORD` e `ADMIN_NAME` podem ser configuradas no Render para trocar as credenciais sem alterar o código. O cadastro público nunca cria administrador: contas cadastradas pela tela pública são sempre ALUNO.
+
+O login do professor redireciona diretamente para `/admin/`. No servidor, todas as rotas `/admin/*` exigem `role=admin`, enquanto `/aluno/*` bloqueia administradores. Portanto, esconder botões no frontend não é a única proteção. O cadastro público sempre cria ALUNO.
 
 Também existe o comando:
 
@@ -50,7 +58,9 @@ No desenvolvimento os PDFs ficam em `uploads/`. Em hospedagem com filesystem ef�
 ## Render
 
 Build: `pip install -r requirements.txt`  
-Start: `gunicorn app:app`
+Start: `gunicorn --bind 0.0.0.0:$PORT app:app`
+
+O `Procfile` já está configurado com esse comando.
 
 Configure no painel do Render `SECRET_KEY`, `DATABASE_URL`, `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` e, se usar Google, as três variáveis OAuth. Para PostgreSQL, use a URL do banco do Render.
 
@@ -79,3 +89,12 @@ A remoção de materiais permanece disponível no backend, mas foi retirada da i
 
 ## Acesso de demonstração
 Por padrão, o sistema usa `professor@portaljm.com` / `PortalJM@2026` como administrador. Em produção, recomenda-se alterar essas variáveis no Render.
+
+
+## Quatro anos e compatibilidade com dados existentes
+
+O banco continua usando a tabela `series`; 1º, 2º, 3º e 4º ano são registros reais relacionados a `subjects` e `contents`. Na inicialização, nomes legados como `1ª Série`/`4ª Série` são migrados para `1º ano`/`4º ano` sem apagar os IDs, matérias ou materiais existentes. Nenhuma tabela é recriada ou apagada.
+
+## Testes
+
+A suíte em `tests/test_app.py` cobre isolamento professor/aluno, redirecionamento do login, quatro séries, criação de material no 4º ano, link externo e validação/upload de PDF.

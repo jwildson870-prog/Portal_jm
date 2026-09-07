@@ -62,6 +62,7 @@ def dashboard():
     return render_template(
         'admin/dashboard.html',
         series=Series.query.count(),
+        series_list=Series.query.order_by(Series.id).all(),
         subjects=Subject.query.count(),
         contents=Content.query.count(),
         users=User.query.count(),
@@ -160,6 +161,12 @@ def subject_delete(id):
 @admin_bp.get('/contents')
 def contents():
     return render_template('admin/contents.html', contents=Content.query.order_by(Content.id.desc()).all())
+
+
+@admin_bp.get('/series/<int:id>')
+def series_detail(id):
+    s = Series.query.get_or_404(id)
+    return render_template('admin/series_detail.html', series=s)
 
 
 def content_form(content=None):

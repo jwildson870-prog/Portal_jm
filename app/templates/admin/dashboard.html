@@ -11,6 +11,15 @@
         <a class="btn admin-primary" href="{{ url_for('admin.content_new') }}">＋ Adicionar material</a>
     </div>
 
+    <div class="teacher-nav">
+        <a class="teacher-nav-item active" href="{{ url_for('admin.dashboard') }}">🏠 <span>Início</span></a>
+        {% for s in series_list %}
+        <a class="teacher-nav-item" href="{{ url_for('admin.series_detail', id=s.id) }}">🎓 <span>{{ s.name }}</span></a>
+        {% endfor %}
+        <a class="teacher-nav-item" href="{{ url_for('admin.content_new') }}">⬆️ <span>Adicionar material</span></a>
+        <a class="teacher-nav-item" href="{{ url_for('admin.contents') }}">📦 <span>Meus materiais</span></a>
+    </div>
+
     <div class="admin-stats">
         <div class="admin-stat"><span>📚</span><strong>{{ series }}</strong><small>Séries</small></div>
         <div class="admin-stat"><span>🧪</span><strong>{{ subjects }}</strong><small>Matérias</small></div>

@@ -1,1 +1,9 @@
-{% extends 'base.html' %}{% block content %}<h1>Olá, {{current_user.name}} 👋</h1><p>Escolha a série que deseja estudar.</p><div class="grid">{% for s in series %}<a class="card tile" href="{{url_for('student.series',id=s.id)}}"><span>📚</span><h2>{{s.name}}</h2><p>{{s.subjects|length}} matéria(s)</p></a>{% else %}<div class="card">Nenhuma série cadastrada.</div>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Área do Aluno · Portal JM{% endblock %}
+{% block content %}
+<section class="student-shell">
+<span class="eyebrow">ÁREA DO ALUNO</span>
+<h1>Olá, {{current_user.name}} 👋</h1><p>Escolha a série que deseja estudar.</p>
+<div class="grid">{% for s in series %}<a class="card tile" href="{{url_for('student.series',id=s.id)}}"><span>📚</span><h2>{{s.name}}</h2><p>{{s.subjects|length}} matéria(s)</p></a>{% else %}<div class="card">Nenhuma série cadastrada.</div>{% endfor %}</div>
+</section>
+{% endblock %}
