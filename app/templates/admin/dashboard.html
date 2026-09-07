@@ -1,11 +1,56 @@
 {% extends 'base.html' %}
+{% block title %}Painel do Professor · Portal JM{% endblock %}
 {% block content %}
-<div class="section-title"><div><div class="eyebrow">Área administrativa</div><h1>Painel do Professor 👨‍🏫</h1><p class="muted">Gerencie as turmas, matérias, conteúdos e usuários do Portal JM.</p></div></div>
-<div class="grid stats">
-  <a class="card tile" href="{{url_for('admin.series_list')}}"><span class="tile-icon">🏫</span><b>{{series}}</b><span>Séries cadastradas</span></a>
-  <a class="card tile" href="{{url_for('admin.subjects_list')}}"><span class="tile-icon">🧪</span><b>{{subjects}}</b><span>Matérias</span></a>
-  <a class="card tile" href="{{url_for('admin.contents')}}"><span class="tile-icon">📚</span><b>{{contents}}</b><span>Conteúdos</span></a>
-  <a class="card tile" href="{{url_for('admin.users')}}"><span class="tile-icon">👥</span><b>{{users}}</b><span>Usuários</span></a>
-</div>
-<div class="adminnav"><a class="btn" href="{{url_for('admin.content_new')}}">+ Adicionar conteúdo</a><a class="btn secondary" href="{{url_for('admin.series_list')}}">Gerenciar séries</a><a class="btn secondary" href="{{url_for('admin.settings')}}">Configurações</a></div>
+<section class="admin-shell">
+    <div class="admin-hero">
+        <div>
+            <span class="eyebrow">ÁREA DO PROFESSOR</span>
+            <h1>Olá, {{ current_user.name }} 👋</h1>
+            <p>Gerencie materiais, aulas e conteúdos das quatro séries em um só lugar.</p>
+        </div>
+        <a class="btn admin-primary" href="{{ url_for('admin.content_new') }}">＋ Adicionar material</a>
+    </div>
+
+    <div class="admin-stats">
+        <div class="admin-stat"><span>📚</span><strong>{{ series }}</strong><small>Séries</small></div>
+        <div class="admin-stat"><span>🧪</span><strong>{{ subjects }}</strong><small>Matérias</small></div>
+        <div class="admin-stat"><span>📦</span><strong>{{ contents }}</strong><small>Materiais publicados</small></div>
+        <div class="admin-stat"><span>👥</span><strong>{{ users }}</strong><small>Usuários</small></div>
+    </div>
+
+    <div class="admin-section-title">
+        <div>
+            <span class="eyebrow">PUBLICAÇÃO RÁPIDA</span>
+            <h2>O que você quer fazer?</h2>
+        </div>
+    </div>
+
+    <div class="admin-actions-grid">
+        <a class="admin-action-card featured" href="{{ url_for('admin.content_new') }}">
+            <div class="action-icon">⬆️</div>
+            <div><h3>Adicionar material</h3><p>Envie um arquivo, use um link ou publique uma explicação.</p></div>
+            <span class="arrow">→</span>
+        </a>
+        <a class="admin-action-card" href="{{ url_for('admin.contents') }}">
+            <div class="action-icon">📦</div>
+            <div><h3>Meus materiais</h3><p>Veja tudo o que já foi publicado no portal.</p></div>
+            <span class="arrow">→</span>
+        </a>
+        <a class="admin-action-card" href="{{ url_for('admin.subjects_list') }}">
+            <div class="action-icon">🧪</div>
+            <div><h3>Matérias</h3><p>Organize as matérias de cada série.</p></div>
+            <span class="arrow">→</span>
+        </a>
+        <a class="admin-action-card" href="{{ url_for('admin.series_list') }}">
+            <div class="action-icon">🎓</div>
+            <div><h3>Séries</h3><p>Configure 1º, 2º, 3º e 4º ano.</p></div>
+            <span class="arrow">→</span>
+        </a>
+    </div>
+
+    <div class="teacher-tip">
+        <span>💡</span>
+        <div><strong>Dica:</strong> você pode publicar um material do computador ou apontar para um arquivo no Google Drive, OneDrive, Dropbox ou outro serviço usando um link.</div>
+    </div>
+</section>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,abort,send_from_directory,current_app
+from flask import Blueprint,render_template,abort,send_from_directory,current_app,redirect,url_for
 from flask_login import login_required,current_user
 from ..models import Series,Subject,Content
 student_bp=Blueprint('student',__name__,url_prefix='/aluno')
@@ -17,6 +17,12 @@ def series(id):return render_template('student/series.html',series=Series.query.
 def subject(id):return render_template('student/subject.html',subject=Subject.query.get_or_404(id))
 @student_bp.get('/conteudo/<int:id>')
 def content(id):return render_template('student/content.html',content=Content.query.get_or_404(id))
+@student_bp.get('/arquivo/<int:id>')
+def arquivo(id):
+    c=Content.query.get_or_404(id)
+    if c.kind not in ('file','pdf') or not c.file_name: abort(404)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], c.file_name, as_attachment=False)
+
 @student_bp.get('/pdf/<int:id>')
 def pdf(id):
     c=Content.query.get_or_404(id)
