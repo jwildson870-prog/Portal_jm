@@ -27,7 +27,7 @@ def create_app(test_config=None):
     @app.errorhandler(404)
     def not_found(e): return render_template('error.html',message='Página não encontrada.'),404
     @app.errorhandler(413)
-    def too_large(e): return render_template('error.html',message='Arquivo muito grande. Limite: 10 MB.'),413
+    def too_large(e): return render_template('error.html',message='Arquivo muito grande. Limite: 25 MB.'),413
     @app.cli.command('create-admin')
     def create_admin():
         from .services import ensure_admin; u,_=ensure_admin(); print('Administrador configurado.' if u else 'Defina ADMIN_EMAIL e ADMIN_PASSWORD.')

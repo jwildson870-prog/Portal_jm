@@ -70,3 +70,7 @@ O painel do professor mantém a interface do Portal JM e oferece uma área de pu
 A integração do seletor oficial do Google Drive (Picker dentro do próprio Portal JM) exige credenciais/API do Google Cloud e pode ser adicionada em uma etapa posterior. O fluxo por link já funciona sem expor credenciais do Drive.
 
 A remoção de materiais permanece disponível no backend, mas foi retirada da interface desta etapa para ser trabalhada depois.
+
+
+## Acesso de demonstração
+Por padrão, o sistema usa `professor@portaljm.com` / `PortalJM@2026` como administrador. Em produção, recomenda-se alterar essas variáveis no Render.
