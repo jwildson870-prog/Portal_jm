@@ -3,7 +3,7 @@
 {% block content %}
 <section class="student-shell">
 <p><a class="back-link" href="{{url_for('student.series',id=subject.series.id)}}">← {{subject.series.name}}</a></p>
-<span class="eyebrow">ÁREA DO ALUNO · MATÉRIA</span><h1>{{subject.name}}</h1>
+<span class="eyebrow">ÁREA DO ALUNO · MATÉRIA</span><div class="admin-page-head" style="margin-top:8px"><div><h1>{{subject.name}}</h1><p>{{subject.contents|length}} conteúdo(s) para estudar.</p></div><span class="badge">⚗️ Trilha ativa</span></div>
 <div class="list">
 {% for c in subject.contents %}
 <a class="card row" href="{{url_for('student.content',id=c.id)}}">
