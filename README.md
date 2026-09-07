@@ -98,14 +98,3 @@ O banco continua usando a tabela `series`; 1º, 2º, 3º e 4º ano são registro
 ## Testes
 
 A suíte em `tests/test_app.py` cobre isolamento professor/aluno, redirecionamento do login, quatro séries, criação de material no 4º ano, link externo e validação/upload de PDF.
-
-
-## Instalação como aplicativo (PWA)
-
-O Portal JM agora pode ser instalado no Android e no computador como aplicativo, sem remover o site. Depois do deploy em HTTPS:
-
-- **Android/Chrome:** abra o Portal JM e toque em **📲 Instalar app** quando o botão aparecer, ou use o menu do Chrome → **Instalar app**.
-- **Computador/Chrome ou Edge:** use o ícone de instalação na barra de endereço ou o menu do navegador → instalar aplicativo.
-- **iPhone/iPad:** no Safari, use **Compartilhar → Adicionar à Tela de Início**.
-
-O aplicativo e o site usam o mesmo servidor, contas e banco Neon; instalar o PWA não cria um banco separado.

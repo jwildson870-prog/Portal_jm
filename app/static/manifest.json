@@ -4,7 +4,6 @@
   "description": "Portal JM – Química: materiais, conteúdos e área do aluno e professor.",
   "lang": "pt-BR",
   "start_url": "/",
-  "id": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
