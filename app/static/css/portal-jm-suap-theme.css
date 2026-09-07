@@ -1,0 +1,155 @@
+
+/* =========================================================
+   Portal JM — tema inspirado em sistemas acadêmicos como SUAP
+   Camada visual: não altera rotas, banco ou regras de negócio.
+   ========================================================= */
+:root{
+  --pjm-primary:#0b5cab;
+  --pjm-primary-dark:#08477f;
+  --pjm-primary-light:#eaf3fb;
+  --pjm-bg:#f3f5f7;
+  --pjm-surface:#ffffff;
+  --pjm-text:#263238;
+  --pjm-muted:#66727d;
+  --pjm-border:#dce2e7;
+  --pjm-shadow:0 2px 10px rgba(22,38,55,.08);
+  --pjm-radius:6px;
+}
+
+html,body{
+  background:var(--pjm-bg) !important;
+  color:var(--pjm-text);
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+/* Links */
+a{ color:var(--pjm-primary); }
+a:hover{ color:var(--pjm-primary-dark); }
+
+/* Headers / navbars */
+header, .header, .navbar, .topbar, .top-bar, nav{
+  box-shadow:0 1px 4px rgba(0,0,0,.10);
+}
+
+.navbar, .topbar, .top-bar{
+  background:var(--pjm-primary) !important;
+  border-color:var(--pjm-primary-dark) !important;
+}
+
+.navbar a, .topbar a, .top-bar a{
+  color:#fff !important;
+}
+
+/* Main containers */
+.container, .content, .main-content, main{
+  max-width:1200px;
+}
+
+/* Cards / panels */
+.card, .panel, .box, .content-card, .dashboard-card{
+  background:var(--pjm-surface);
+  border:1px solid var(--pjm-border);
+  border-radius:var(--pjm-radius);
+  box-shadow:var(--pjm-shadow);
+}
+
+/* Buttons */
+button, .btn, input[type="submit"], input[type="button"], .button{
+  border-radius:5px !important;
+  border:1px solid transparent;
+  transition:background .15s ease, box-shadow .15s ease, transform .05s ease;
+}
+
+.btn-primary, .primary, button.primary,
+button[type="submit"], input[type="submit"]{
+  background:var(--pjm-primary) !important;
+  color:#fff !important;
+  border-color:var(--pjm-primary) !important;
+}
+
+.btn-primary:hover, .primary:hover, button.primary:hover,
+button[type="submit"]:hover, input[type="submit"]:hover{
+  background:var(--pjm-primary-dark) !important;
+  box-shadow:0 2px 6px rgba(8,71,127,.25);
+}
+
+button:active, .btn:active{ transform:translateY(1px); }
+
+/* Forms */
+input, select, textarea{
+  border:1px solid #cbd3da !important;
+  border-radius:4px !important;
+  background:#fff !important;
+  color:var(--pjm-text) !important;
+}
+
+input:focus, select:focus, textarea:focus{
+  outline:none !important;
+  border-color:var(--pjm-primary) !important;
+  box-shadow:0 0 0 2px rgba(11,92,171,.12) !important;
+}
+
+/* Tables */
+table{
+  background:#fff;
+  border-collapse:separate;
+  border-spacing:0;
+  border:1px solid var(--pjm-border);
+  border-radius:6px;
+  overflow:hidden;
+  width:100%;
+}
+th{
+  background:#eef3f7 !important;
+  color:#34424e;
+  font-weight:600;
+}
+th,td{ border-bottom:1px solid var(--pjm-border); }
+tr:last-child td{ border-bottom:0; }
+tbody tr:hover{ background:#f7faff; }
+
+/* Badges / status */
+.badge, .tag, .status{
+  border-radius:4px;
+}
+
+/* Installation/app button */
+#install-app,
+.install-app,
+.install-button,
+.pwa-install,
+[data-install-app]{
+  background:var(--pjm-primary) !important;
+  color:#fff !important;
+  border:0 !important;
+  border-radius:6px !important;
+  padding:10px 16px !important;
+  font-weight:600 !important;
+  box-shadow:0 2px 7px rgba(11,92,171,.22);
+}
+#install-app:hover,
+.install-app:hover,
+.install-button:hover,
+.pwa-install:hover,
+[data-install-app]:hover{
+  background:var(--pjm-primary-dark) !important;
+}
+
+/* Mobile */
+@media (max-width:768px){
+  .container, .content, .main-content, main{
+    width:calc(100% - 24px);
+    max-width:none;
+  }
+  .card, .panel, .box, .content-card, .dashboard-card{
+    border-radius:6px;
+  }
+  table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+}

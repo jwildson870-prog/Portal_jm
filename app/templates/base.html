@@ -13,6 +13,7 @@
   <title>{% block title %}Portal JM – Química{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
   <script src="{{ url_for('static', filename='js/pwa.js') }}" defer></script>
+<link rel="stylesheet" href="../static/css/portal-jm-suap-theme.css">
 </head>
 <body class="portal-body">
 {% if current_user.is_authenticated %}
