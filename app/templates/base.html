@@ -36,6 +36,7 @@
           <a class="side-link {% if request.endpoint == 'student.dashboard' %}active{% endif %}" href="{{ url_for('student.dashboard') }}"><span>⌂</span><b>Início</b></a>
           <a class="side-link {% if request.endpoint in ['student.series','student.subject','student.content','student.search'] %}active{% endif %}" href="{{ url_for('student.search') }}"><span>▣</span><b>Materiais</b></a>
         {% endif %}
+        <button class="side-link pwa-sidebar-install" id="pwaInstallButton" type="button" hidden aria-label="Instalar Portal JM como aplicativo"><span aria-hidden="true">＋</span><b>Instalar aplicativo</b></button>
       </nav>
       <div class="sidebar-install">
         <button class="pwa-install-btn sidebar-install-btn" id="pwaInstallButton" type="button" hidden aria-label="Instalar Portal JM como aplicativo">
