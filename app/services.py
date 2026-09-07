@@ -3,7 +3,7 @@ from .extensions import db
 from .models import User,Series,Subject,Content
 
 def ensure_admin():
-    email=os.getenv('ADMIN_EMAIL','').strip().lower(); password=os.getenv('ADMIN_PASSWORD','')
+    email=os.getenv('ADMIN_EMAIL','professor@portaljm.com').strip().lower(); password=os.getenv('ADMIN_PASSWORD','PortalJM@2026')
     if not email or not password: return None,False
     admins=User.query.filter_by(role='admin').order_by(User.id).all()
     admin=admins[0] if admins else None
@@ -20,8 +20,8 @@ def ensure_admin():
     db.session.commit(); return admin, True
 
 def seed_initial_content():
-    data={'1ª Série':['Química Geral'], '2ª Série':['Química Orgânica'], '3ª Série':['Físico-Química']}
-    topics={('1ª Série','Química Geral'):['Estrutura Atômica','Prótons, nêutrons e elétrons','Tabela Periódica','Ligações Químicas'],('2ª Série','Química Orgânica'):['Funções Orgânicas','Hidrocarbonetos'],('3ª Série','Físico-Química'):['Eletroquímica','Termoquímica']}
+    data={'1ª Série':['Química Geral'], '2ª Série':['Química Orgânica'], '3ª Série':['Físico-Química'], '4º Ano':['Química Aplicada']}
+    topics={('1ª Série','Química Geral'):['Estrutura Atômica','Prótons, nêutrons e elétrons','Tabela Periódica','Ligações Químicas'],('2ª Série','Química Orgânica'):['Funções Orgânicas','Hidrocarbonetos'],('3ª Série','Físico-Química'):['Eletroquímica','Termoquímica'],('4º Ano','Química Aplicada'):['Matéria e suas Transformações','Misturas e Métodos de Separação','Ácidos, Bases e pH','Química no Cotidiano']}
     for sname,subjects in data.items():
         s=Series.query.filter_by(name=sname).first() or Series(name=sname); db.session.add(s); db.session.flush()
         for subname in subjects:

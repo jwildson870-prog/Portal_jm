@@ -1,1 +1,14 @@
-{% extends 'base.html' %}{% block content %}<h1>Olá, {{current_user.name}} 👋</h1><p>Escolha a série que deseja estudar.</p><div class="grid">{% for s in series %}<a class="card tile" href="{{url_for('student.series',id=s.id)}}"><span>📚</span><h2>{{s.name}}</h2><p>{{s.subjects|length}} matéria(s)</p></a>{% else %}<div class="card">Nenhuma série cadastrada.</div>{% endfor %}</div>{% endblock %}
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-title"><div><div class="eyebrow">Área do aluno</div><h1>Olá, {{current_user.name}} 👋</h1><p class="muted">Escolha o ano/série que deseja estudar.</p></div></div>
+<div class="grid">
+  {% for s in series %}
+    <a class="card tile" href="{{url_for('student.series',id=s.id)}}">
+      <span class="tile-icon">{% if '4' in s.name %}🔬{% elif '3' in s.name %}⚡{% elif '2' in s.name %}🧬{% else %}⚛️{% endif %}</span>
+      <span class="badge">{{loop.index}}º nível</span>
+      <h2>{{s.name}}</h2>
+      <p>{{s.subjects|length}} matéria(s) · Explorar conteúdos →</p>
+    </a>
+  {% else %}<div class="card">Nenhuma série cadastrada.</div>{% endfor %}
+</div>
+{% endblock %}
