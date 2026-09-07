@@ -1,20 +1,27 @@
 {% extends 'base.html' %}
+{% block title %}{{ content.title }} · Portal JM{% endblock %}
 {% block content %}
-<p><a href="{{ url_for('student.subject', id=content.subject.id) }}">← {{ content.subject.name }}</a></p>
-<article class="card content">
-    <span class="badge">{{ {'file':'Material','pdf':'PDF','slide':'Slides','video':'Vídeo','link':'Link','explanation':'Explicação'}[content.kind] }}</span>
+<section class="student-shell">
+  <a class="back-link" href="{{ url_for('student.subject', id=content.subject.id) }}">← {{ content.subject.name }}</a>
+  <article class="card content-card">
+    <span class="badge">{{ {'file':'Material','pdf':'PDF','slide':'Slides','video':'Vídeo','link':'Link','explanation':'Explicação'}.get(content.kind,'Material') }}</span>
     <h1>{{ content.title }}</h1>
-    <p>{{ content.description }}</p>
+    {% if content.description %}<p>{{ content.description }}</p>{% endif %}
+
     {% if content.kind == 'explanation' %}
-        <div class="prose">{{ content.body|safe }}</div>
+      <div class="prose">{{ content.body|safe }}</div>
     {% elif content.kind in ['file', 'pdf'] %}
-        <a class="btn" href="{{ url_for('student.arquivo', id=content.id) }}" target="_blank" rel="noopener">ABRIR MATERIAL</a>
+      <div class="actions" style="justify-content:flex-start;margin-top:22px">
+        <a class="btn" href="{{ url_for('student.arquivo', id=content.id) }}" target="_blank" rel="noopener">Abrir material</a>
+        {% if content.kind == 'pdf' %}<a class="btn secondary" href="{{ url_for('student.pdf', id=content.id) }}" target="_blank" rel="noopener">Abrir PDF</a>{% endif %}
+      </div>
     {% elif content.kind == 'slide' %}
-        <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer">ABRIR SLIDES</a>
+      <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer" style="margin-top:22px">Abrir slides ↗</a>
     {% elif content.kind == 'video' %}
-        <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer">ASSISTIR À VÍDEO-AULA</a>
+      <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer" style="margin-top:22px">Assistir à vídeo-aula ↗</a>
     {% elif content.kind == 'link' %}
-        <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer">ABRIR MATERIAL ↗</a>
+      <a class="btn" href="{{ content.external_url }}" target="_blank" rel="noopener noreferrer" style="margin-top:22px">Abrir material ↗</a>
     {% endif %}
-</article>
+  </article>
+</section>
 {% endblock %}

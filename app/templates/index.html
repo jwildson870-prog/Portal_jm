@@ -1,1 +1,16 @@
-{% extends 'base.html' %}{% block content %}<section class="hero"><div class="card center"><div class="atom">⚛</div><h1>Portal JM – Química</h1><p>Aprenda Química com conteúdos organizados, materiais e aulas.</p><h2>Você já possui uma conta?</h2><div class="actions"><a class="btn" href="{{url_for('auth.login')}}">Já tenho uma conta</a><a class="btn secondary" href="{{url_for('auth.register')}}">Ainda não tenho uma conta</a></div></div></section>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Portal JM – Química{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-card">
+    <div class="atom" aria-hidden="true">⚗</div>
+    <span class="eyebrow">PORTAL DE APRENDIZAGEM</span>
+    <h1>Portal JM – Química</h1>
+    <p>Um espaço organizado para acessar conteúdos, materiais e trilhas de estudo de Química.</p>
+    <div class="actions">
+      <a class="btn" href="{{ url_for('auth.login') }}">Entrar no portal</a>
+      <a class="btn secondary" href="{{ url_for('auth.register') }}">Criar minha conta</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

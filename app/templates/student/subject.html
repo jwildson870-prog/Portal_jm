@@ -2,15 +2,15 @@
 {% block title %}{{ subject.name }} · Portal JM{% endblock %}
 {% block content %}
 <section class="student-shell">
-<p><a class="back-link" href="{{url_for('student.series',id=subject.series.id)}}">← {{subject.series.name}}</a></p>
-<span class="eyebrow">ÁREA DO ALUNO · MATÉRIA</span><div class="admin-page-head" style="margin-top:8px"><div><h1>{{subject.name}}</h1><p>{{subject.contents|length}} conteúdo(s) para estudar.</p></div><span class="badge">⚗️ Trilha ativa</span></div>
-<div class="list">
-{% for c in subject.contents %}
-<a class="card row" href="{{url_for('student.content',id=c.id)}}">
-  <div><h2>{{c.title}}</h2><p>{{c.description or 'Material de estudo'}}</p></div>
-  <span class="badge">{{ {'explanation':'Explicação','file':'Arquivo','pdf':'PDF','slide':'Slides','video':'Vídeo','link':'Link'}.get(c.kind,'Material') }}</span>
-</a>
-{% else %}<div class="card">Nenhum conteúdo cadastrado.</div>{% endfor %}
-</div>
+  <a class="back-link" href="{{ url_for('student.series', id=subject.series.id) }}">← {{ subject.series.name }}</a>
+  <div class="page-head"><div><span class="eyebrow">ÁREA DO ALUNO · MATÉRIA</span><h1>{{ subject.name }}</h1><p>{{ subject.contents|length }} conteúdo(s) para estudar.</p></div><span class="badge">⚗ Trilha ativa</span></div>
+  <div class="list">
+    {% for c in subject.contents %}
+      <a class="card row-card" href="{{ url_for('student.content', id=c.id) }}">
+        <div><h2>{{ c.title }}</h2><p>{{ c.description or 'Material de estudo' }}</p></div>
+        <span class="badge">{{ {'explanation':'Explicação','file':'Arquivo','pdf':'PDF','slide':'Slides','video':'Vídeo','link':'Link'}.get(c.kind,'Material') }}</span>
+      </a>
+    {% else %}<div class="card empty-state"><h2>Nenhum conteúdo cadastrado</h2><p>Esta matéria ainda não possui materiais.</p></div>{% endfor %}
+  </div>
 </section>
 {% endblock %}

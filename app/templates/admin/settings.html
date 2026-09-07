@@ -1,1 +1,5 @@
-{% extends 'base.html' %}{% block content %}<div class="card"><h1>Configurações</h1><p>Configurações sensíveis ficam nas variáveis de ambiente. O cadastro público não pode promover um aluno a administrador.</p><p>Para produção, configure HTTPS, SECRET_KEY, PostgreSQL e armazenamento persistente para PDFs.</p></div>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Configurações · Portal JM{% endblock %}
+{% block content %}
+<section class="admin-shell"><div class="page-head"><div><a class="back-link" href="{{ url_for('admin.dashboard') }}">← Painel</a><span class="eyebrow">SISTEMA</span><h1>Configurações</h1><p>As configurações de produção ficam protegidas por variáveis de ambiente.</p></div></div><div class="card" style="padding:22px"><div class="section-title" style="margin-top:0"><h2>Ambiente de produção</h2></div><p style="color:var(--muted);line-height:1.65">Use PostgreSQL/Neon em <strong>DATABASE_URL</strong>, uma <strong>SECRET_KEY</strong> forte e armazenamento persistente para uploads. Consulte o README para o passo a passo do Render.</p></div></section>
+{% endblock %}

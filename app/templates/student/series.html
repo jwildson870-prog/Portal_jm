@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}{{series.name}} · Portal JM{% endblock %}
+{% block title %}{{ series.name }} · Portal JM{% endblock %}
 {% block content %}
 <section class="student-shell">
-<p><a class="back-link" href="{{url_for('student.dashboard')}}">← Voltar para séries</a></p>
-<div class="admin-page-head"><div><span class="eyebrow">TRILHA DE ESTUDOS</span><h1>{{series.name}}</h1><p>Escolha uma matéria para continuar seus estudos.</p></div><span class="badge">🧪 Química</span></div>
-<div class="grid">{% for s in series.subjects %}<a class="card tile" href="{{url_for('student.subject',id=s.id)}}"><span>⚗️</span><h2>{{s.name}}</h2><p>{{s.contents|length}} conteúdo(s)</p><span class="arrow">→</span></a>{% else %}<div class="card">Nenhuma matéria cadastrada.</div>{% endfor %}</div>
+  <a class="back-link" href="{{ url_for('student.dashboard') }}">← Voltar para séries</a>
+  <div class="page-head"><div><span class="eyebrow">TRILHA DE ESTUDOS</span><h1>{{ series.name }}</h1><p>Escolha uma matéria para continuar seus estudos.</p></div><span class="badge">🧪 Química</span></div>
+  <div class="grid">
+    {% for s in series.subjects %}
+      <a class="card tile" href="{{ url_for('student.subject', id=s.id) }}"><span>⚗</span><h2>{{ s.name }}</h2><p>{{ s.contents|length }} conteúdo(s)</p><span class="arrow">→</span></a>
+    {% else %}<div class="card empty-state"><h2>Nenhuma matéria cadastrada</h2><p>Esta série ainda não possui matérias.</p></div>{% endfor %}
+  </div>
 </section>
 {% endblock %}

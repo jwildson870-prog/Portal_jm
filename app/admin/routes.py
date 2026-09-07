@@ -3,6 +3,7 @@ import re
 import uuid
 from pathlib import Path
 from urllib.parse import urlparse
+from mimetypes import guess_type
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app
 from flask_login import login_required, current_user
@@ -284,7 +285,8 @@ def content_delete(id):
 @admin_bp.get('/file/<filename>')
 def file(filename):
     from flask import send_from_directory
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    mime_type = guess_type(filename)[0] or 'application/octet-stream'
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, mimetype=mime_type, as_attachment=False, conditional=True)
 
 
 @admin_bp.get('/users')

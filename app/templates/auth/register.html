@@ -1,1 +1,23 @@
-{% extends 'base.html' %}{% block title %}Cadastro · Portal JM{% endblock %}{% block content %}<div class="auth card"><h1>Criar conta</h1><form method="post"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><label>Nome<input name="name" required maxlength="120"></label><label>E-mail<input name="email" type="email" required maxlength="255"></label><label>Senha<input name="password" type="password" minlength="8" required></label><label>Confirmar senha<input name="confirm_password" type="password" minlength="8" required></label><button class="btn" type="submit">Cadastrar</button></form><a class="google" href="{{url_for('auth.google_login')}}">Continuar com Google</a><p>Já possui conta? <a href="{{url_for('auth.login')}}">Entrar</a></p></div>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Criar conta · Portal JM{% endblock %}
+{% block content %}
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="brand-mark">⚗</div>
+      <span class="eyebrow">PORTAL JM</span>
+      <h1>Criar conta</h1>
+      <p>Cadastre-se para acessar os materiais de estudo.</p>
+    </div>
+    <form method="post" class="auth-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="field"><span>Nome</span><input name="name" required maxlength="120" autocomplete="name"></label>
+      <label class="field"><span>E-mail</span><input name="email" type="email" required maxlength="255" autocomplete="email"></label>
+      <label class="field"><span>Senha</span><input name="password" type="password" minlength="8" required autocomplete="new-password"></label>
+      <label class="field"><span>Confirmar senha</span><input name="confirm_password" type="password" minlength="8" required autocomplete="new-password"></label>
+      <button class="btn" type="submit">Criar conta</button>
+    </form>
+    <p class="auth-switch">Já possui uma conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
+  </div>
+</section>
+{% endblock %}

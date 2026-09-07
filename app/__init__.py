@@ -6,11 +6,14 @@ from flask_wtf import CSRFProtect
 from .extensions import db
 
 def create_app(test_config=None):
-    app=Flask(__name__,instance_relative_config=True); Path(app.instance_path).mkdir(parents=True,exist_ok=True); Path(app.root_path).parent.joinpath('uploads').mkdir(exist_ok=True)
+    app=Flask(__name__,instance_relative_config=True); Path(app.instance_path).mkdir(parents=True,exist_ok=True)
+    default_uploads = Path(app.root_path).parent / 'uploads'
+    upload_folder = Path(os.getenv('UPLOAD_FOLDER', str(default_uploads)))
+    upload_folder.mkdir(parents=True, exist_ok=True)
     dburl=os.getenv('DATABASE_URL','sqlite:///portal_jm.db')
     if dburl.startswith('postgres://'): dburl='postgresql+psycopg2://'+dburl[11:]
     elif dburl.startswith('postgresql://'): dburl='postgresql+psycopg2://'+dburl[13:]
-    app.config.update(SECRET_KEY=os.getenv('SECRET_KEY','dev-change-me'),SQLALCHEMY_DATABASE_URI=dburl,SQLALCHEMY_TRACK_MODIFICATIONS=False,UPLOAD_FOLDER=str(Path(app.root_path).parent/'uploads'),MAX_CONTENT_LENGTH=25*1024*1024,SESSION_COOKIE_HTTPONLY=True,SESSION_COOKIE_SAMESITE='Lax',SESSION_COOKIE_SECURE=os.getenv('SESSION_COOKIE_SECURE','false').lower()=='true')
+    app.config.update(SECRET_KEY=os.getenv('SECRET_KEY','dev-change-me'),SQLALCHEMY_DATABASE_URI=dburl,SQLALCHEMY_TRACK_MODIFICATIONS=False,UPLOAD_FOLDER=str(upload_folder),MAX_CONTENT_LENGTH=25*1024*1024,SESSION_COOKIE_HTTPONLY=True,SESSION_COOKIE_SAMESITE='Lax',SESSION_COOKIE_SECURE=os.getenv('SESSION_COOKIE_SECURE','false').lower()=='true')
     if test_config: app.config.update(test_config)
     db.init_app(app); login=LoginManager(app); login.login_view='auth.login'; CSRFProtect(app)
     from .models import User
