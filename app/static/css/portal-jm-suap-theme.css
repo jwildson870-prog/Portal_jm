@@ -430,8 +430,12 @@ Somente apresentação: não altera rotas, componentes ou regras.
 }
 
 .sidebar-install-btn {
-  min-height: 46px;
-  border-radius: 12px;
+  min-height: 50px;
+  padding: 11px 14px !important;
+  color: #fff !important;
+  font-size: .95rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
   background: linear-gradient(135deg, #087d71, #00665d);
   box-shadow: 0 7px 18px rgba(0, 102, 93, .18);
 }
