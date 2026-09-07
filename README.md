@@ -69,6 +69,11 @@ O painel do professor mantém a interface do Portal JM e oferece uma área de pu
 
 A integração do seletor oficial do Google Drive (Picker dentro do próprio Portal JM) exige credenciais/API do Google Cloud e pode ser adicionada em uma etapa posterior. O fluxo por link já funciona sem expor credenciais do Drive.
 
+Cada fonte também tem um campo **Tipo de material**:
+- Meu dispositivo → Arquivo ou PDF (PDF exige que o arquivo enviado seja realmente `.pdf`).
+- Google Drive / Outro lugar → Link externo, Slides ou Vídeo.
+- Escrever aqui → sempre Explicação.
+
 A remoção de materiais permanece disponível no backend, mas foi retirada da interface desta etapa para ser trabalhada depois.
 
 

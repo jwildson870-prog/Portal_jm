@@ -33,6 +33,12 @@
             </div>
 
             <div id="deviceSource" class="source-panel visible">
+                <label class="formgrid" style="margin-bottom:14px">Tipo de material
+                    <select id="deviceKind" onchange="document.getElementById('kind').value=this.value; updateAcceptedTypes();">
+                        <option value="file">Arquivo</option>
+                        <option value="pdf">PDF</option>
+                    </select>
+                </label>
                 <label class="dropzone" id="dropzone">
                     <input id="fileInput" name="file" type="file" hidden accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.ppt,.pptx,.doc,.docx,.txt">
                     <span class="drop-icon">☁️</span>
@@ -48,11 +54,25 @@
                     <div><strong>📁 Abra seu Google Drive</strong><p>Escolha o arquivo no Drive e copie o link de compartilhamento.</p></div>
                     <a class="btn secondary" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener noreferrer">Abrir Google Drive ↗</a>
                 </div>
+                <label>Tipo de material
+                    <select id="driveKind" onchange="document.getElementById('kind').value=this.value">
+                        <option value="link">Link externo</option>
+                        <option value="slide">Slides</option>
+                        <option value="video">Vídeo</option>
+                    </select>
+                </label>
                 <label>Link do arquivo no Drive<input id="driveUrl" type="url" placeholder="https://drive.google.com/..." oninput="syncExternal(this.value)"></label>
             </div>
 
             <div id="linkSource" class="source-panel">
                 <div class="link-services"><span>🔗 Link externo</span><span>☁️ OneDrive</span><span>📦 Dropbox</span><span>🌐 Qualquer site</span></div>
+                <label>Tipo de material
+                    <select id="linkKind" onchange="document.getElementById('kind').value=this.value">
+                        <option value="link">Link externo</option>
+                        <option value="video">Vídeo</option>
+                        <option value="slide">Slides</option>
+                    </select>
+                </label>
                 <label>URL do material<input id="linkUrl" type="url" placeholder="https://..." oninput="syncExternal(this.value)"></label>
             </div>
 
@@ -88,15 +108,21 @@
 
 <script>
 const sourceMap = { device: 'file', drive: 'link', link: 'link', text: 'explanation' };
+const kindSelectByPanel = { device: 'deviceKind', drive: 'driveKind', link: 'linkKind' };
 function selectSource(source) {
     document.querySelectorAll('.source-card').forEach(card => card.classList.toggle('active', card.dataset.source === source));
     document.querySelectorAll('.source-panel').forEach(panel => panel.classList.remove('visible'));
     document.getElementById(source + 'Source').classList.add('visible');
-    document.getElementById('kind').value = sourceMap[source];
+    const selectId = kindSelectByPanel[source];
+    document.getElementById('kind').value = selectId ? document.getElementById(selectId).value : sourceMap[source];
     document.getElementById('textEditorCard').style.display = source === 'text' ? 'block' : 'none';
     if (source === 'device') document.getElementById('externalUrl').value = '';
 }
 function syncExternal(value) { document.getElementById('externalUrl').value = value; }
+function updateAcceptedTypes() {
+    const isPdf = document.getElementById('deviceKind').value === 'pdf';
+    input.accept = isPdf ? '.pdf' : '.pdf,.png,.jpg,.jpeg,.webp,.gif,.ppt,.pptx,.doc,.docx,.txt';
+}
 const input = document.getElementById('fileInput');
 const fileName = document.getElementById('fileName');
 const dropzone = document.getElementById('dropzone');
@@ -104,5 +130,23 @@ input.addEventListener('change', () => { fileName.textContent = input.files[0] ?
 ['dragenter','dragover'].forEach(e => dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.add('dragging'); }));
 ['dragleave','drop'].forEach(e => dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.remove('dragging'); }));
 dropzone.addEventListener('drop', ev => { if (ev.dataTransfer.files.length) { input.files = ev.dataTransfer.files; fileName.textContent = '✓ ' + input.files[0].name; } });
+
+{% if content %}
+(function initEditMode(){
+    const existingKind = {{ content.kind|tojson }};
+    const existingUrl = {{ (content.external_url or '')|tojson }};
+    const existingFile = {{ (content.file_name or '')|tojson }};
+    let source = 'device';
+    if (existingKind === 'explanation') source = 'text';
+    else if (existingKind === 'link') source = 'link';
+    else if (existingKind === 'slide' || existingKind === 'video') source = existingUrl.indexOf('drive.google.com') !== -1 ? 'drive' : 'link';
+    else if (existingKind === 'file' || existingKind === 'pdf') source = 'device';
+    const selectId = kindSelectByPanel[source];
+    if (selectId) { const sel = document.getElementById(selectId); if ([...sel.options].some(o => o.value === existingKind)) sel.value = existingKind; }
+    selectSource(source);
+    if (existingUrl) { const urlField = source === 'drive' ? 'driveUrl' : 'linkUrl'; document.getElementById(urlField).value = existingUrl; }
+    if (existingFile) fileName.textContent = '✓ Arquivo já enviado (envie um novo para substituir)';
+})();
+{% endif %}
 </script>
 {% endblock %}

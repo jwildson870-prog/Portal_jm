@@ -26,7 +26,7 @@ def valid_url(value):
     return parsed.scheme in ('http', 'https') and bool(parsed.netloc)
 
 
-def save_uploaded_file(file):
+def save_uploaded_file(file, required_extension=None):
     if not file or not file.filename:
         return None, None
 
@@ -34,6 +34,9 @@ def save_uploaded_file(file):
     extension = Path(original).suffix.lower().lstrip('.')
 
     if not extension or extension not in ALLOWED_EXTENSIONS:
+        return False, None
+
+    if required_extension and extension != required_extension:
         return False, None
 
     if request.content_length and request.content_length > MAX_UPLOAD:
@@ -193,9 +196,11 @@ def content_form(content=None):
     new_file = old_file
 
     if kind in {'file', 'pdf'}:
-        uploaded, original_name = save_uploaded_file(request.files.get('file') or request.files.get('pdf'))
+        required_extension = 'pdf' if kind == 'pdf' else None
+        uploaded, original_name = save_uploaded_file(request.files.get('file') or request.files.get('pdf'), required_extension)
         if uploaded is False:
-            flash('Esse tipo de arquivo não é permitido.', 'error')
+            msg = 'Para o tipo "PDF", envie um arquivo .pdf.' if kind == 'pdf' else 'Esse tipo de arquivo não é permitido.'
+            flash(msg, 'error')
             return None, series, subjects
         if uploaded == 'too_large':
             flash('Arquivo muito grande. Limite: 25 MB.', 'error')

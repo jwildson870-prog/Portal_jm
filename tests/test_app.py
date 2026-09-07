@@ -51,6 +51,33 @@ def test_student_blocked_from_admin(client,app):
     client.post('/auth/register',data={'name':'Aluno','email':'a@test.local','password':'Senha1234!','confirm_password':'Senha1234!'})
     login(client,'a@test.local','Senha1234!'); assert client.get('/admin/').status_code==403
 
+def test_professor_never_sees_student_area(client,app):
+    # Login do professor deve redirecionar direto para o painel, nunca para a área do aluno.
+    r=login(client,'admin@test.local','AdminSenha123!')
+    assert r.status_code==302 and r.headers['Location'].endswith('/admin/')
+    # O professor não pode acessar a área do aluno.
+    assert client.get('/aluno/').status_code==403
+    # E o link "Estudar" (aluno) não aparece para ele no cabeçalho.
+    painel=client.get('/admin/')
+    assert 'Estudar' not in painel.text
+    assert 'Painel' in painel.text
+
+def test_series_1_2_3_4_all_functional(client,app):
+    with app.app_context():
+        names={s.name for s in Series.query.all()}
+    # As quatro séries são registros reais no banco, não apenas botões visuais.
+    assert len(names)>=4
+
+def test_pdf_kind_requires_pdf_extension(client,app):
+    login(client,'admin@test.local','AdminSenha123!')
+    with app.app_context():
+        s=Series.query.first(); sub=Subject.query.filter_by(series_id=s.id).first(); sid,subid=s.id,sub.id
+    data={'title':'Não é PDF','description':'','series_id':str(sid),'subject_id':str(subid),'kind':'pdf','file':(io.BytesIO(b'conteudo'), 'arquivo.docx')}
+    r=client.post('/admin/contents/new',data=data,content_type='multipart/form-data')
+    assert r.status_code==200  # permanece no formulário com erro, não redireciona
+    with app.app_context():
+        assert Content.query.filter_by(title='Não é PDF').first() is None
+
 def test_pdf_flow(client,app,tmp_path):
     login(client,'admin@test.local','AdminSenha123!')
     with app.app_context():
