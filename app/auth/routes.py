@@ -27,13 +27,27 @@ def register():
     return render_template('auth/register.html')
 @auth_bp.route('/login',methods=['GET','POST'])
 def login():
-    if current_user.is_authenticated:return redirect(url_for('auth.index'))
-    if request.method=='POST':
-        u=User.query.filter_by(email=request.form.get('email','').strip().lower()).first()
-        if not u or not u.check_password(request.form.get('password','')):flash('E-mail ou senha inválidos.','error')
-        else:
-            login_user(u);return redirect(url_for('admin.dashboard' if u.is_admin else 'student.dashboard'))
-    return render_template('auth/login.html')
+    # Abrir a tela de login nunca deve colocar o usuário automaticamente
+    # em uma conta já autenticada. Isso é especialmente importante no
+    # desenvolvimento, quando uma sessão anterior do professor pode ter
+    # ficado salva no navegador. Ao entrar novamente pela tela de login,
+    # encerramos a sessão anterior e exigimos e-mail + senha.
+    if request.method == 'GET':
+        if current_user.is_authenticated:
+            logout_user()
+            session.clear()
+        return render_template('auth/login.html')
+
+    email = request.form.get('email','').strip().lower()
+    password = request.form.get('password','')
+    u = User.query.filter_by(email=email).first()
+
+    if not u or not u.check_password(password):
+        flash('E-mail ou senha inválidos.','error')
+        return render_template('auth/login.html')
+
+    login_user(u)
+    return redirect(url_for('admin.dashboard' if u.is_admin else 'student.dashboard'))
 @auth_bp.post('/logout')
 @login_required
 def logout():logout_user();session.clear();flash('Você saiu da conta.','success');return redirect(url_for('home'))
