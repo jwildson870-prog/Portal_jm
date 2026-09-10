@@ -977,3 +977,334 @@ tbody tr:hover{background:rgba(56,189,248,.045)}
 
 @media(max-width:899px){.workspace-columns{grid-template-columns:1fr}.workspace-side{position:static;order:-1}.workspace-side .workspace-help{display:none}.publish-summary{display:grid;grid-template-columns:42px 1fr;column-gap:12px;align-items:center}.publish-summary .summary-icon{grid-row:span 2}.publish-summary h3{margin:0}.publish-summary p{margin:4px 0 10px}.publish-btn{grid-column:1/-1}.manage-grid,.settings-grid{grid-template-columns:1fr}.inline-create{grid-template-columns:1fr 1fr}.inline-create .btn{grid-column:1/-1}.organized-material{grid-template-columns:52px minmax(0,1fr)}.organized-actions{grid-column:1/-1;justify-content:flex-start;padding-top:10px;border-top:1px solid rgba(120,163,204,.09)}}
 @media(max-width:560px){.workspace-shell{padding-bottom:25px}.workspace-head{flex-direction:column;gap:12px;margin-bottom:18px}.workspace-head h1{font-size:2rem}.workspace-head-badge{font-size:.8rem}.form-section{padding:18px}.form-section-head{margin-bottom:18px}.workspace-side{margin-bottom:2px}.publish-summary{padding:15px}.library-toolbar{align-items:flex-start;flex-direction:column;gap:5px}.organized-material{padding:14px;gap:11px}.large-icon{width:46px;height:46px}.organized-material .material-main h3{font-size:.98rem}.organized-material .material-main p{font-size:.82rem}.organized-actions .btn{flex:1 1 auto}.user-row{grid-template-columns:44px minmax(0,1fr)}.user-avatar{width:42px;height:42px}.user-action{grid-column:1/-1;padding-top:9px;border-top:1px solid rgba(120,163,204,.09)}.user-action .btn{width:100%}.inline-create{grid-template-columns:1fr}.inline-create .btn{grid-column:auto}.options{grid-template-columns:1fr}.student-shell .row{padding:15px}.student-shell .tile{min-height:125px;padding:16px}}
+
+/* =========================================================
+   PORTAL JM — REFINO DAS ABAS INTERNAS v2
+   Somente conteúdo das páginas internas. O menu lateral NÃO é alterado.
+========================================================= */
+
+/* Área interna: largura, ritmo e leitura */
+.admin-shell.workspace-shell,
+.admin-shell:not(:has(.admin-hero)) {
+  box-sizing:border-box;
+  width:min(1120px,100%);
+  margin:0 auto;
+  padding:18px 18px 48px;
+}
+
+.workspace-shell > .back-link,
+.admin-shell > .back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin:2px 0 16px;
+  color:#62d7ff;
+  font-weight:750;
+  text-decoration:none;
+}
+.workspace-shell > .back-link:hover,
+.admin-shell > .back-link:hover{color:#a5eaff}
+
+.workspace-head,
+.admin-page-head{
+  padding:4px 2px 20px;
+  border-bottom:1px solid rgba(96,165,250,.10);
+}
+.workspace-head h1,
+.admin-page-head h1{line-height:1.08}
+.workspace-head p,
+.admin-page-head p{font-size:.94rem}
+
+/* Cartões e formulários internos */
+.workspace-shell .publisher-card,
+.admin-shell > .publisher-card,
+.admin-shell > form.publisher-card,
+.admin-shell .question-editor{
+  border:1px solid rgba(86,146,198,.20);
+  background:linear-gradient(155deg,rgba(14,37,62,.96),rgba(8,24,41,.97));
+  box-shadow:0 14px 34px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.018);
+}
+
+.workspace-shell .form-section + .form-section{margin-top:0}
+.workspace-shell .field-block input,
+.workspace-shell .field-block select,
+.workspace-shell .field-block textarea,
+.admin-shell > .publisher-card input,
+.admin-shell > .publisher-card select,
+.admin-shell > .publisher-card textarea,
+.admin-shell .question-editor input,
+.admin-shell .question-editor select,
+.admin-shell .question-editor textarea,
+.student-shell input,
+.student-shell select,
+.student-shell textarea{
+  box-sizing:border-box;
+  width:100%;
+  border:1px solid #23415f;
+  border-radius:13px;
+  background:#091b2e;
+  color:#edf5fd;
+  outline:none;
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.workspace-shell .field-block input,
+.workspace-shell .field-block select,
+.admin-shell > .publisher-card input,
+.admin-shell > .publisher-card select,
+.admin-shell .question-editor input,
+.admin-shell .question-editor select,
+.student-shell input,
+.student-shell select{min-height:50px;padding:12px 14px}
+.workspace-shell .field-block textarea,
+.admin-shell > .publisher-card textarea,
+.admin-shell .question-editor textarea,
+.student-shell textarea{min-height:130px;padding:13px 14px;resize:vertical;line-height:1.5}
+
+.workspace-shell .field-block input:focus,
+.workspace-shell .field-block select:focus,
+.workspace-shell .field-block textarea:focus,
+.admin-shell > .publisher-card input:focus,
+.admin-shell > .publisher-card select:focus,
+.admin-shell > .publisher-card textarea:focus,
+.admin-shell .question-editor input:focus,
+.admin-shell .question-editor select:focus,
+.admin-shell .question-editor textarea:focus,
+.student-shell input:focus,
+.student-shell select:focus,
+.student-shell textarea:focus{
+  border-color:#38bdf8;
+  background:#0b2138;
+  box-shadow:0 0 0 3px rgba(56,189,248,.10);
+}
+
+.workspace-shell .field-block > label,
+.admin-shell > .publisher-card > label,
+.admin-shell .question-editor > label,
+.admin-shell .question-editor .options label{
+  color:#dce8f5;
+}
+
+/* Formulários simples */
+.admin-shell > form.publisher-card,
+.admin-shell > .publisher-card.form-grid{
+  display:grid;
+  gap:18px;
+  padding:22px;
+}
+.admin-shell > form.publisher-card .btn,
+.admin-shell > .publisher-card .btn{margin-top:2px}
+
+/* Editor de atividade: uma questão = um bloco claro */
+.admin-shell .question-editor{
+  display:grid;
+  gap:16px;
+  margin:16px 0;
+  padding:20px;
+  border-radius:18px;
+}
+.admin-shell .question-editor h2{
+  margin:0;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(120,163,204,.11);
+  font-size:1.12rem;
+  color:#f0f6fc;
+}
+.admin-shell .question-editor .options{gap:10px}
+.admin-shell .question-editor .options label{font-size:.86rem}
+.admin-shell .question-editor + .question-editor{margin-top:12px}
+
+/* Listas de materiais */
+.material-list.organized-list{margin-top:0}
+.organized-material{
+  min-width:0;
+  border:1px solid rgba(86,146,198,.18);
+  background:linear-gradient(145deg,#0e2742,#0a1c30);
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+.organized-material:hover{
+  transform:translateY(-1px);
+  border-color:rgba(56,189,248,.30);
+  box-shadow:0 14px 30px rgba(0,0,0,.20);
+}
+.material-main{min-width:0}
+.organized-material .material-main h3,
+.organized-material .material-main p{overflow-wrap:anywhere}
+.organized-actions .btn{white-space:nowrap}
+.organized-actions .danger{border-color:rgba(248,113,113,.22)}
+
+/* Criação de matérias/séries */
+.compact-section{padding:22px}
+.inline-create{
+  align-items:stretch;
+}
+.inline-create input,
+.inline-create select{
+  min-width:0;
+  width:100%;
+  min-height:50px;
+  box-sizing:border-box;
+}
+.manage-card{min-width:0}
+.manage-content{min-width:0}
+.manage-content h2{overflow-wrap:anywhere}
+.manage-actions .btn{white-space:nowrap}
+
+/* Usuários */
+.user-row{min-width:0}
+.user-main{min-width:0}
+.user-main h3,.user-main p{overflow-wrap:anywhere}
+.user-action{justify-self:end}
+
+/* Detalhe da série */
+.admin-shell > .grid .publisher-card{height:100%;box-sizing:border-box}
+.material-mini{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 0;
+  border-top:1px solid rgba(120,163,204,.10);
+}
+.material-mini strong{min-width:0;overflow-wrap:anywhere;color:#dce8f5}
+
+/* ALUNO — páginas internas */
+.student-shell{
+  box-sizing:border-box;
+  width:min(1120px,100%);
+  margin:0 auto;
+  padding:18px 18px 48px;
+}
+.student-shell > h1{
+  margin:8px 0 10px;
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  line-height:1.08;
+  letter-spacing:-.04em;
+}
+.student-shell > h2{
+  margin:28px 0 13px;
+  font-size:1.3rem;
+}
+.student-shell > p:not(.muted){color:#9eb2c7;line-height:1.55}
+.student-shell .grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.student-shell .list{display:grid;gap:12px}
+.student-shell .card,
+.student-shell .tile{
+  box-sizing:border-box;
+  min-width:0;
+  border:1px solid rgba(86,146,198,.18);
+  background:linear-gradient(145deg,#0e2742,#0a1c30);
+  box-shadow:0 10px 26px rgba(0,0,0,.15);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+.student-shell a.card:hover,
+.student-shell a.tile:hover{
+  transform:translateY(-2px);
+  border-color:rgba(56,189,248,.30);
+  box-shadow:0 15px 32px rgba(0,0,0,.20);
+}
+.student-shell .row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.student-shell .row > div{min-width:0}
+.student-shell .row h2,
+.student-shell .row h3,
+.student-shell .tile h2,
+.student-shell .tile h3{overflow-wrap:anywhere}
+.student-shell .row p,
+.student-shell .tile p{line-height:1.45}
+.student-shell .tile{display:block;text-decoration:none}
+.student-shell .back-link{display:inline-flex;margin-bottom:14px}
+.student-shell .inlineform{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  margin:18px 0 22px;
+  padding:14px;
+}
+.student-shell .inlineform input{min-height:50px}
+.student-shell .content{
+  padding:24px;
+  margin-top:18px;
+}
+.student-shell .content h1{margin:12px 0 9px;font-size:clamp(1.8rem,4vw,2.5rem);line-height:1.1}
+.student-shell .content > p{color:#a1b3c7;line-height:1.6}
+.student-shell .prose{margin-top:22px;color:#d8e5f2;line-height:1.7}
+.student-shell .prose h2{margin:25px 0 9px}
+.student-shell .preview-frame{
+  display:block;width:100%;min-height:60vh;margin:20px 0;border:1px solid #23415f;border-radius:14px;background:#071321;
+}
+.student-shell .content-tools{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;padding-top:17px;border-top:1px solid rgba(120,163,204,.10);
+}
+.student-shell .content-tools form{margin:0}
+.student-shell .choice{
+  display:block;
+  margin:9px 0;
+  padding:13px 14px;
+  border:1px solid rgba(86,146,198,.16);
+  border-radius:13px;
+  background:rgba(9,27,46,.65);
+  color:#dbe8f5;
+}
+.student-shell .choice:has(input:checked){border-color:rgba(56,189,248,.40);background:rgba(14,55,82,.55)}
+.student-shell .choice input{width:auto;min-height:auto;margin-right:8px;box-shadow:none}
+.student-shell .progress-track{height:12px;overflow:hidden;border-radius:999px;background:#071625;border:1px solid #1c3650}
+.student-shell .progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c1ee,#2563eb)}
+.student-shell .center{text-align:center;padding:36px 24px}
+.student-shell .center .atom{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 14px;border-radius:17px;background:linear-gradient(135deg,#2563eb,#22c1ee);font-size:1.6rem}
+
+/* Não deixar elementos de edição ficarem largos demais */
+.narrow-workspace{width:min(760px,100%)}
+
+@media(max-width:760px){
+  .admin-shell.workspace-shell,
+  .admin-shell:not(:has(.admin-hero)),
+  .student-shell{padding:15px 14px 34px}
+  .workspace-head,.admin-page-head{gap:14px;padding-bottom:17px}
+  .workspace-head .btn,.admin-page-head .btn{width:100%;justify-content:center}
+  .workspace-columns{grid-template-columns:1fr}
+  .workspace-side{position:static;order:-1}
+  .workspace-main{gap:13px}
+  .form-section{padding:18px}
+  .form-section-head{gap:10px}
+  .form-section-head h2{font-size:1.15rem}
+  .inline-create{grid-template-columns:1fr}
+  .inline-create .btn{width:100%}
+  .manage-grid{grid-template-columns:1fr}
+  .student-shell .grid{grid-template-columns:1fr}
+  .student-shell .content{padding:18px}
+  .student-shell .inlineform{grid-template-columns:1fr;padding:0;border:0;background:transparent}
+  .student-shell .inlineform .btn{width:100%}
+}
+
+@media(max-width:560px){
+  .workspace-head h1,.admin-page-head h1,.student-shell > h1{font-size:1.85rem}
+  .workspace-head p,.admin-page-head p{font-size:.88rem}
+  .workspace-shell .field-block input,
+  .workspace-shell .field-block select,
+  .workspace-shell .field-block textarea,
+  .admin-shell > .publisher-card input,
+  .admin-shell > .publisher-card select,
+  .admin-shell > .publisher-card textarea,
+  .admin-shell .question-editor input,
+  .admin-shell .question-editor select,
+  .admin-shell .question-editor textarea,
+  .student-shell input,.student-shell select,.student-shell textarea{font-size:16px}
+  .organized-material{grid-template-columns:46px minmax(0,1fr);padding:14px}
+  .organized-actions{grid-column:1/-1}
+  .organized-actions .btn{flex:1 1 120px}
+  .manage-actions{justify-content:stretch}
+  .manage-actions .btn{flex:1}
+  .student-shell .row{align-items:flex-start;padding:15px;gap:10px}
+  .student-shell .content-tools{display:grid;grid-template-columns:1fr}
+  .student-shell .content-tools .btn{width:100%;justify-content:center}
+  .student-shell .preview-frame{min-height:48vh}
+}
