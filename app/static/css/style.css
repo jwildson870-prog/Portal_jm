@@ -527,12 +527,6 @@ select option{background:#0d1727;color:#e8f0f8}
   box-shadow:0 14px 34px rgba(0,0,0,.24);
   align-items:center;
 }
-.admin-hero:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
 .admin-hero h1,.admin-page-head h1,.section-head h1{color:#f8fafc}
 .admin-hero p,.admin-page-head p{color:#9fb0c4}
 .eyebrow{color:#7dd3fc}
@@ -637,3 +631,177 @@ tbody tr:hover{background:#16243a}
   .admin-stats{gap:8px}
   .admin-stat{padding:12px 9px}
 }
+
+/* =========================================================
+   PORTAL JM — REFINAMENTO ESTÉTICO FINAL
+   Somente visualização: hierarquia, espaçamento, responsividade
+   e consistência entre telas. Nenhuma regra de negócio alterada.
+========================================================= */
+:root{
+  --pm-bg:#070d17;
+  --pm-surface:#0f1929;
+  --pm-surface-2:#132238;
+  --pm-surface-3:#182a43;
+  --pm-navy:#0b1220;
+  --pm-blue:#2563eb;
+  --pm-blue-dark:#1d4ed8;
+  --pm-blue-light:#60a5fa;
+  --pm-blue-pale:#bfdbfe;
+  --pm-text:#f1f5f9;
+  --pm-text-soft:#cbd5e1;
+  --pm-muted:#91a2b7;
+  --pm-border:#263951;
+  --pm-border-strong:#355579;
+  --pm-shadow:0 12px 30px rgba(0,0,0,.20);
+}
+
+/* Base visual mais limpa */
+html,body{background:var(--pm-bg);color:var(--pm-text)}
+body{font-size:15px;line-height:1.5}
+::selection{background:#60a5fa;color:#07111f}
+
+/* Cabeçalho */
+.topbar{height:60px;padding:0 16px;background:rgba(11,18,32,.97);border-bottom:1px solid #1c2c43;box-shadow:0 5px 20px rgba(0,0,0,.16);backdrop-filter:blur(10px)}
+.menu-toggle{width:40px;height:40px;font-size:1.85rem;border-radius:10px}
+.menu-toggle:hover{background:#16243a;color:var(--pm-blue-light)}
+
+/* Menu lateral: hierarquia e respiro */
+.side-menu{width:min(350px,90vw);background:#0b1220;border-right:1px solid #20334d}
+.side-brand{min-height:82px;padding:17px 18px;gap:13px}
+.side-logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(145deg,#2563eb,#1d4ed8);box-shadow:0 8px 20px rgba(37,99,235,.22)}
+.side-brand strong{font-size:1.05rem;letter-spacing:-.01em}
+.side-brand small{color:#91a2b7}
+.side-area{margin:16px 16px 10px;padding:10px 12px;border-radius:10px;background:#12233a;border:1px solid #2a476c;color:#bfdbfe;font-size:.68rem;letter-spacing:.055em}
+.side-nav{gap:5px;padding:5px 11px 12px}
+.side-link{min-height:47px;padding:10px 13px;border-radius:11px;gap:12px;color:#c7d2e0}
+.side-link b{font-size:.91rem}
+.side-link span{color:#8095af}
+.side-link:hover{background:#15263e;color:#f8fafc}
+.side-link.active{background:#2563eb;box-shadow:0 6px 18px rgba(37,99,235,.20)}
+.side-install{margin-top:2px}
+.side-bottom{padding:15px 16px 18px;gap:12px}
+.side-logout{min-height:42px;border-radius:10px;background:#101c2d;border-color:#293d57}
+.side-logout:hover{background:#182941;border-color:#3a5b80}
+
+/* Área principal: elimina sensação de vazio e cria uma coluna visual */
+.app-authenticated .site-main{padding:78px clamp(14px,3vw,34px) 34px}
+.site-footer{padding:22px 18px 28px;color:#71839b}
+
+/* Cartões gerais */
+.card,.panel,.box,.content-card,.dashboard-card{background:var(--pm-surface);border-color:var(--pm-border);box-shadow:var(--pm-shadow)}
+.card{padding:26px}
+
+/* Botões: poucos acentos, alto contraste */
+.btn{min-height:44px;padding:10px 18px;border-radius:11px;background:var(--pm-blue-light);border-color:var(--pm-blue-light);color:#07111f;box-shadow:0 6px 16px rgba(37,99,235,.16);transition:transform .15s ease,background .15s ease,border-color .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);background:#93c5fd;border-color:#93c5fd;color:#07111f;box-shadow:0 9px 20px rgba(37,99,235,.22)}
+.btn.secondary{background:#17263b;color:#bfdbfe;border-color:#355579;box-shadow:none}
+.btn.secondary:hover{background:#203653;border-color:#4b76a5;color:#dbeafe}
+
+/* Formulários com aparência consistente */
+.auth,.wide{width:min(100%,900px)}
+.auth{margin:34px auto;padding:0}
+.auth form,.wide form{gap:16px}
+.auth label,.wide label,.form-grid label,.question-editor label{color:var(--pm-text-soft);font-weight:700}
+input,select,textarea{min-height:44px;padding:11px 13px;border-radius:10px;border:1px solid #30455f;background:#0c1625;color:#edf4fb}
+input:focus,select:focus,textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.14)}
+.google{border-radius:10px;background:#111f32;border-color:#2d425d;color:#e5edf7}
+
+/* Dashboard do professor */
+.admin-shell,.student-shell{width:min(100%,1220px);margin:0 auto;padding:0 0 30px}
+.admin-hero{position:relative;overflow:hidden;padding:30px clamp(22px,3.5vw,36px);margin-bottom:22px;border-radius:20px;border:1px solid #2a4565;background:linear-gradient(135deg,#101d30 0%,#0f1a2b 58%,#12243c 100%);box-shadow:0 16px 38px rgba(0,0,0,.24)}
+.admin-hero:before{content:"";position:absolute;width:240px;height:240px;right:-90px;top:-120px;border-radius:50%;background:rgba(96,165,250,.06);pointer-events:none}
+.admin-hero > *{position:relative;z-index:1}
+.admin-hero h1{margin:5px 0 8px;font-size:clamp(1.85rem,4vw,2.65rem);line-height:1.08;letter-spacing:-.04em;color:#f8fafc}
+.admin-hero p{margin:0;max-width:700px;color:#9fb0c4;line-height:1.6}
+.eyebrow{font-size:.69rem;font-weight:850;letter-spacing:.09em;color:#7dd3fc}
+.admin-primary{min-width:190px}
+
+/* Navegação do painel */
+.teacher-nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 26px}
+.teacher-nav-item{min-height:43px;padding:9px 13px;border-radius:10px;background:#0f1b2c;border:1px solid #293e59;color:#aebdd0;box-shadow:none;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .15s ease}
+.teacher-nav-item:hover{transform:translateY(-1px);background:#172942;border-color:#42658e;color:#e6f0fb}
+.teacher-nav-item.active{background:#60a5fa;border-color:#60a5fa;color:#07111f;box-shadow:0 6px 16px rgba(37,99,235,.16)}
+
+/* Estatísticas: seis blocos bem distribuídos */
+.admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:32px}
+.admin-stat{min-height:108px;padding:18px 19px;border-radius:16px;background:#0f1a2b;border:1px solid #263951;box-shadow:0 9px 24px rgba(0,0,0,.17);transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.admin-stat:hover{transform:translateY(-2px);border-color:#355579;background:#132238}
+.admin-stat span{color:#7dd3fc}
+.admin-stat strong{font-size:1.6rem;color:#f8fafc}
+.admin-stat small{color:#91a2b7}
+
+.admin-section-title{margin:8px 0 15px}
+.admin-section-title h2{margin:5px 0 0;font-size:1.42rem;letter-spacing:-.02em;color:#f1f5f9}
+
+/* Cards de ações: mais premium, sem neon */
+.admin-actions-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-action-card{min-height:108px;padding:18px 19px;border-radius:16px;background:#0f1a2b;border:1px solid #263951;color:#dfe8f3;box-shadow:0 9px 24px rgba(0,0,0,.17);transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease}
+.admin-action-card:hover{transform:translateY(-2px);background:#14243a;border-color:#42658e;box-shadow:0 14px 28px rgba(0,0,0,.24);color:#f8fafc}
+.admin-action-card.featured{background:#12233a;border-color:#315a87}
+.action-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#172d49;border:1px solid #294b72;color:#7dd3fc}
+.admin-action-card h3{font-size:1rem;color:#f8fafc}
+.admin-action-card p{font-size:.86rem;color:#94a6bb}
+.arrow{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#172d49;color:#7dd3fc}
+.teacher-tip{margin-top:20px;padding:16px 18px;border-radius:13px;border:1px solid #293e59;background:#101c2e;color:#9fb0c4}
+
+/* Conteúdo secundário */
+.grid{gap:18px}
+.tile:hover{border-color:#42658e;background:#132238;transform:translateY(-2px)}
+.badge{background:#172d49;color:#bfdbfe;border:1px solid #2e4f75}
+.choice{border-color:#2b3e58;background:#0f1a2b;color:#dbe7f5;border-radius:11px}
+.choice:hover{border-color:#4a77a8;background:#172d49}
+.file-preview{background:#0d1726;border-color:#293c56;border-radius:12px}
+.material-mini{border-color:#293c56;color:#dbe7f5}
+.progress-track{background:#22324a}
+.progress-fill{background:#60a5fa}
+
+/* Tabelas */
+table{border-radius:12px;overflow:hidden;background:#0f1a2b;border-color:#2a3b53}
+th{background:#17263a;color:#dbe7f5}
+th,td{border-color:#27384f}
+td{color:#d5dfeb}
+tbody tr:hover{background:#16243a}
+
+/* Alertas */
+.flash{border-radius:11px}
+.flash.error{background:#351a22;color:#fecaca;border-color:#6f303c}
+.flash.success{background:#102b27;color:#bbf7d0;border-color:#24594d}
+
+/* Responsividade intencional */
+@media(max-width:1000px){
+  .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:780px){
+  .topbar{height:58px}
+  .app-authenticated .site-main{min-height:calc(100vh - 58px);padding:72px 14px 28px}
+  .admin-hero{padding:24px 20px;border-radius:18px}
+  .admin-hero h1{font-size:clamp(1.7rem,7vw,2.2rem)}
+  .admin-hero p{font-size:.92rem}
+  .admin-primary{width:100%;min-width:0}
+  .teacher-nav-item{flex:1 1 calc(50% - 8px);justify-content:center;min-width:0}
+  .admin-actions-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .side-menu{width:min(92vw,350px)}
+  .app-authenticated .site-main{padding-left:11px;padding-right:11px}
+  .admin-hero{padding:21px 17px;gap:15px}
+  .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:25px}
+  .admin-stat{min-height:91px;padding:13px 11px;border-radius:14px;column-gap:9px}
+  .admin-stat span{font-size:1.25rem}
+  .admin-stat strong{font-size:1.35rem}
+  .admin-stat small{font-size:.73rem;line-height:1.25}
+  .teacher-nav{gap:7px;margin-bottom:20px}
+  .teacher-nav-item{min-height:42px;padding:8px 7px;font-size:.82rem}
+  .admin-action-card{min-height:96px;padding:15px;border-radius:14px}
+  .action-icon{width:38px;height:38px}
+  .admin-action-card p{font-size:.82rem}
+}
+@media(max-width:370px){
+  .admin-stats{grid-template-columns:1fr}
+  .teacher-nav-item{flex-basis:100%}
+  .admin-hero h1{font-size:1.65rem}
+}
+
+/* Acessibilidade e toque */
+.side-link:focus-visible,.teacher-nav-item:focus-visible,.btn:focus-visible,.menu-toggle:focus-visible,.menu-close:focus-visible,.side-logout:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
