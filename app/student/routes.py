@@ -1,9 +1,9 @@
-from flask import Blueprint,render_template,abort,send_from_directory,current_app,redirect,url_for,request
+from flask import Blueprint,render_template,abort,send_from_directory,current_app,redirect,url_for,request,Response
 from flask_login import login_required,current_user
 from sqlalchemy import or_
 from ..extensions import db
 from ..models import Series,Subject,Content,Activity,ActivityAttempt,Experiment,Favorite,Progress,Notification
-from ..storage import presigned_url, b2_enabled
+from ..storage import get_file, b2_enabled, StorageError
 student_bp=Blueprint('student',__name__,url_prefix='/aluno')
 @student_bp.before_request
 def guard():
@@ -63,16 +63,30 @@ def arquivo(id):
     c=Content.query.get_or_404(id)
     if c.kind not in ('file','pdf') or not c.file_name: abort(404)
     if b2_enabled():
-        url = presigned_url(c.file_name)
-        if not url: abort(404)
-        return redirect(url)
+        try:
+            obj = get_file(c.file_name)
+        except StorageError as exc:
+            current_app.logger.warning('Falha ao abrir material %s: %s | %s', c.id, exc.message, exc.technical)
+            return render_template('error.html', message=exc.message, error_title='Não foi possível abrir o material', back_url=url_for('student.content', id=c.id)), 502
+        return Response(obj['Body'].iter_chunks(chunk_size=64 * 1024), content_type=obj.get('ContentType') or 'application/octet-stream', headers={
+            'Content-Length': str(obj['ContentLength']),
+            'Content-Disposition': 'inline',
+            'Cache-Control': 'private, no-store',
+        })
     return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,as_attachment=False)
 @student_bp.get('/pdf/<int:id>')
 def pdf(id):
     c=Content.query.get_or_404(id)
     if c.kind!='pdf' or not c.file_name: abort(404)
     if b2_enabled():
-        url = presigned_url(c.file_name)
-        if not url: abort(404)
-        return redirect(url)
+        try:
+            obj = get_file(c.file_name)
+        except StorageError as exc:
+            current_app.logger.warning('Falha ao abrir PDF %s: %s | %s', c.id, exc.message, exc.technical)
+            return render_template('error.html', message=exc.message, error_title='Não foi possível abrir o PDF', back_url=url_for('student.content', id=c.id)), 502
+        return Response(obj['Body'].iter_chunks(chunk_size=64 * 1024), content_type='application/pdf', headers={
+            'Content-Length': str(obj['ContentLength']),
+            'Content-Disposition': 'inline',
+            'Cache-Control': 'private, no-store',
+        })
     return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,mimetype='application/pdf')

@@ -259,3 +259,15 @@ body{color:var(--text);overflow-x:hidden}
 /* Formulário simples de atividades sem geração dinâmica por JavaScript. */
 .question-editor .options{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:700px){.question-editor .options{grid-template-columns:1fr}}
+
+/* Página de erro de armazenamento */
+.error-page {
+  max-width: 680px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}

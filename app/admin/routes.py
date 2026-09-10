@@ -1,10 +1,10 @@
 import os, uuid
 from pathlib import Path
 from urllib.parse import urlparse
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app, send_from_directory, Response
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
-from ..storage import upload as storage_upload, delete as storage_delete, presigned_url, b2_enabled
+from ..storage import upload as storage_upload, delete as storage_delete, get_file, b2_enabled, StorageError
 from ..extensions import db
 from ..models import Series, Subject, Content, User, Activity, ActivityAttempt, Experiment, Notification
 
@@ -24,8 +24,11 @@ def save_uploaded_file(file, required_extension=None):
     if request.content_length and request.content_length > MAX_UPLOAD: return 'too_large', None
     try:
         filename = storage_upload(file, original, file.mimetype)
+    except StorageError as exc:
+        current_app.logger.warning('Falha no upload do material: %s | %s', exc.message, exc.technical)
+        return exc, None
     except Exception:
-        current_app.logger.exception('Falha no upload do material')
+        current_app.logger.exception('Falha inesperada no upload do material')
         return 'storage_error', None
     return filename, original
 
@@ -132,6 +135,12 @@ def content_form(content=None):
         if uploaded == 'too_large':
             flash('Arquivo muito grande. Limite: 25 MB.', 'error')
             return None, series, subjects
+        if isinstance(uploaded, StorageError):
+            flash(uploaded.message, 'error')
+            return None, series, subjects
+        if uploaded == 'storage_error':
+            flash('Não foi possível enviar o arquivo para o armazenamento. Verifique a configuração do Backblaze B2 no servidor.', 'error')
+            return None, series, subjects
         if uploaded:
             new_file = uploaded
             desc = desc or f'Material enviado: {original}'
@@ -192,9 +201,16 @@ def content_delete(id):
 @admin_bp.get('/file/<path:filename>')
 def file(filename):
     if b2_enabled():
-        url = presigned_url(filename)
-        if not url: abort(404)
-        return redirect(url)
+        try:
+            obj = get_file(filename)
+        except StorageError as exc:
+            current_app.logger.warning('Falha ao abrir arquivo administrativo: %s | %s', exc.message, exc.technical)
+            return render_template('error.html', message=exc.message, error_title='Não foi possível abrir o arquivo', back_url=url_for('admin.contents')), 502
+        return Response(obj['Body'].iter_chunks(chunk_size=64 * 1024), content_type=obj.get('ContentType') or 'application/octet-stream', headers={
+            'Content-Length': str(obj['ContentLength']),
+            'Content-Disposition': 'inline',
+            'Cache-Control': 'private, no-store',
+        })
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
 
 @admin_bp.get('/users')
