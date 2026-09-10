@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app, send_from_directory
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from ..storage import upload as storage_upload, delete as storage_delete, presigned_url, b2_enabled
 from ..extensions import db
 from ..models import Series, Subject, Content, User, Activity, ActivityAttempt, Experiment, Notification
 
@@ -21,8 +22,12 @@ def save_uploaded_file(file, required_extension=None):
     original = secure_filename(file.filename); extension = Path(original).suffix.lower().lstrip('.')
     if not extension or extension not in ALLOWED_EXTENSIONS or (required_extension and extension != required_extension): return False, None
     if request.content_length and request.content_length > MAX_UPLOAD: return 'too_large', None
-    filename = f'{uuid.uuid4().hex}.{extension}'; folder = Path(current_app.config['UPLOAD_FOLDER']); folder.mkdir(parents=True, exist_ok=True)
-    file.save(folder / filename); return filename, original
+    try:
+        filename = storage_upload(file, original, file.mimetype)
+    except Exception:
+        current_app.logger.exception('Falha no upload do material')
+        return 'storage_error', None
+    return filename, original
 
 def notify_students(message, link=None):
     for student in User.query.filter_by(role='student').all():
@@ -151,10 +156,7 @@ def content_form(content=None):
     db.session.commit()
 
     if old_file and old_file != new_file:
-        try:
-            os.remove(Path(current_app.config['UPLOAD_FOLDER']) / old_file)
-        except FileNotFoundError:
-            pass
+        storage_delete(old_file)
     return content, None, None
 
 @admin_bp.route('/contents/new', methods=['GET', 'POST'])
@@ -183,15 +185,16 @@ def content_delete(id):
     db.session.delete(content)
     db.session.commit()
     if filename:
-        try:
-            os.remove(Path(current_app.config['UPLOAD_FOLDER']) / filename)
-        except FileNotFoundError:
-            pass
+        storage_delete(filename)
     flash('Conteúdo excluído.', 'success')
     return redirect(url_for('admin.contents'))
 
-@admin_bp.get('/file/<filename>')
+@admin_bp.get('/file/<path:filename>')
 def file(filename):
+    if b2_enabled():
+        url = presigned_url(filename)
+        if not url: abort(404)
+        return redirect(url)
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
 
 @admin_bp.get('/users')

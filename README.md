@@ -125,3 +125,11 @@ O Render informa que o filesystem normal do serviço é efêmero; somente os arq
 ## Arquitetura simplificada
 
 Esta versão não usa JavaScript no site. A interface é feita com HTML e CSS e as regras, formulários, autenticação, uploads, atividades e banco de dados são processados no Flask/Python. O menu lateral no celular usa apenas HTML + CSS. O mecanismo de instalação PWA/service worker foi removido porque ele depende de JavaScript.
+
+## Backblaze B2
+
+Em produção, os uploads podem ser armazenados no Backblaze B2. Configure no Render as variáveis `B2_APPLICATION_KEY_ID`, `B2_APPLICATION_KEY`, `B2_BUCKET_NAME`, `B2_ENDPOINT` e opcionalmente `B2_REGION`.
+
+Quando as quatro primeiras estiverem preenchidas, novos arquivos enviados pelo painel do professor são gravados no B2. O banco continua guardando a referência do arquivo e o Portal JM gera URLs temporárias assinadas para abrir os arquivos com segurança, sem expor a Application Key ao navegador.
+
+Se as variáveis B2 não estiverem configuradas, o sistema continua usando `UPLOAD_FOLDER` como armazenamento local, mantendo compatibilidade com desenvolvimento e com instalações que usam Persistent Disk.

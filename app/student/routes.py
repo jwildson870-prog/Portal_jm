@@ -3,6 +3,7 @@ from flask_login import login_required,current_user
 from sqlalchemy import or_
 from ..extensions import db
 from ..models import Series,Subject,Content,Activity,ActivityAttempt,Experiment,Favorite,Progress,Notification
+from ..storage import presigned_url, b2_enabled
 student_bp=Blueprint('student',__name__,url_prefix='/aluno')
 @student_bp.before_request
 def guard():
@@ -61,9 +62,17 @@ def search():
 def arquivo(id):
     c=Content.query.get_or_404(id)
     if c.kind not in ('file','pdf') or not c.file_name: abort(404)
+    if b2_enabled():
+        url = presigned_url(c.file_name)
+        if not url: abort(404)
+        return redirect(url)
     return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,as_attachment=False)
 @student_bp.get('/pdf/<int:id>')
 def pdf(id):
     c=Content.query.get_or_404(id)
     if c.kind!='pdf' or not c.file_name: abort(404)
+    if b2_enabled():
+        url = presigned_url(c.file_name)
+        if not url: abort(404)
+        return redirect(url)
     return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,mimetype='application/pdf')
