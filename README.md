@@ -120,3 +120,8 @@ O Portal JM mantém o fluxo seguro de compartilhar links do Google Drive. Um Goo
 O Portal JM salva os arquivos enviados em `UPLOAD_FOLDER`. Em desenvolvimento, o padrão continua sendo `uploads/`. No Render, configure `UPLOAD_FOLDER` para o mesmo caminho usado como **Mount Path** de um Persistent Disk, por exemplo `/var/data/uploads`.
 
 O Render informa que o filesystem normal do serviço é efêmero; somente os arquivos dentro do Mount Path do Persistent Disk são preservados entre reinícios e deploys. Persistent Disk exige serviço pago e mantém o serviço em uma única instância.
+
+
+## Arquitetura simplificada
+
+Esta versão não usa JavaScript no site. A interface é feita com HTML e CSS e as regras, formulários, autenticação, uploads, atividades e banco de dados são processados no Flask/Python. O menu lateral no celular usa apenas HTML + CSS. O mecanismo de instalação PWA/service worker foi removido porque ele depende de JavaScript.

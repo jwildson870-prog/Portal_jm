@@ -231,3 +231,31 @@ body{color:var(--text);overflow-x:hidden}
 /* Páginas públicas nunca mostram o shell autenticado. */
 .public-page .site-main{margin-left:0!important;padding-top:0!important}
 .public-page .site-footer{margin-left:0!important}
+
+/* =========================================================
+   VERSÃO SIMPLIFICADA — SOMENTE PYTHON + HTML + CSS
+   O menu mobile usa apenas checkbox + CSS. Não há JavaScript.
+========================================================= */
+.menu-check{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.menu-toggle{display:none;align-items:center;justify-content:center;text-decoration:none}
+.menu-close{cursor:pointer}
+.menu-overlay{cursor:pointer}
+
+@media(max-width:900px){
+  .menu-toggle{display:grid}
+  .side-menu{transform:translate3d(-105%,0,0)!important;transition:transform .22s ease!important}
+  .menu-check:checked ~ .side-menu{transform:translate3d(0,0,0)!important}
+  .menu-overlay{display:block;position:fixed;inset:0;z-index:999;background:rgba(2,8,15,.58);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
+  .menu-check:checked ~ .menu-overlay{opacity:1;visibility:visible;pointer-events:auto}
+  .menu-check:checked ~ .topbar .menu-toggle{background:var(--accent-soft);border-color:var(--accent)}
+}
+
+@media(min-width:901px){
+  .menu-toggle{display:none}
+  .side-menu{transform:none!important}
+  .menu-overlay{display:none!important}
+}
+
+/* Formulário simples de atividades sem geração dinâmica por JavaScript. */
+.question-editor .options{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:700px){.question-editor .options{grid-template-columns:1fr}}
