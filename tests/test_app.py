@@ -3,7 +3,7 @@ import os
 import pytest
 from app import create_app
 from app.extensions import db
-from app.models import User, Series, Subject, Content
+from app.models import User, Series, Subject, Content, Activity, Notification
 
 @pytest.fixture()
 def app(tmp_path, monkeypatch):
@@ -148,3 +148,43 @@ def test_activity_and_experiment_are_available_to_students(client, app):
         db.session.add_all([a,e]); db.session.commit(); aid,eid=a.id,e.id
     client.post('/auth/logout')
     login(client, 'aluno@test.local', 'Senha1234!') if False else None
+
+
+def test_content_edit_get_does_not_redirect(client, app):
+    login(client, 'professor@portaljm.com', 'PortalJM@2026')
+    with app.app_context():
+        s=Series.query.filter_by(name='1º ano').first()
+        sub=Subject.query.filter_by(series_id=s.id).first()
+        c=Content(title='Editável',description='',kind='explanation',body='<p>Antes</p>',series_id=s.id,subject_id=sub.id)
+        db.session.add(c); db.session.commit(); cid=c.id
+    r=client.get(f'/admin/contents/{cid}/edit')
+    assert r.status_code == 200
+    assert 'Editável' in r.text
+
+def test_activity_rejects_non_object_questions(client, app):
+    login(client, 'professor@portaljm.com', 'PortalJM@2026')
+    with app.app_context():
+        a=Activity.query.first()
+        if a is None:
+            s=Series.query.first(); sub=Subject.query.filter_by(series_id=s.id).first()
+            a=Activity(title='Teste',description='',series_id=s.id,subject_id=sub.id)
+            a.set_questions([]); db.session.add(a); db.session.commit()
+        aid=a.id
+    r=client.post(f'/admin/activities/{aid}/editar', data={
+        'title':'Teste','description':'','questions_json':'[1, 2]'
+    })
+    assert r.status_code == 200
+    with app.app_context():
+        assert db.session.get(Activity, aid).get_questions() == []
+
+def test_new_activity_notifies_students(client, app):
+    client.post('/auth/register', data={'name':'Aluno','email':'notifica@test.local','password':'Senha1234!','confirm_password':'Senha1234!'})
+    client.post('/auth/logout')
+    login(client, 'professor@portaljm.com', 'PortalJM@2026')
+    with app.app_context():
+        s=Series.query.first(); sub=Subject.query.filter_by(series_id=s.id).first(); sid,subid=s.id,sub.id
+        uid=User.query.filter_by(email='notifica@test.local').first().id
+    r=client.post('/admin/activities', data={'title':'Nova atividade','description':'','series_id':sid,'subject_id':subid})
+    assert r.status_code == 302
+    with app.app_context():
+        assert Notification.query.filter_by(user_id=uid).filter(Notification.message.ilike('%Nova atividade%')).first() is not None

@@ -102,6 +102,8 @@ def content_form(content=None):
         if uploaded=='too_large': flash('Arquivo muito grande. Limite: 25 MB.','error'); return None,series,subjects
         if uploaded: new_file=uploaded; desc=desc or f'Material enviado: {original}'
         elif not old_file: flash('Escolha um arquivo do seu dispositivo.','error'); return None,series,subjects
+        elif kind == 'pdf' and Path(old_file).suffix.lower() != '.pdf':
+            flash('Para alterar este material para PDF, envie um novo arquivo .pdf.','error'); return None,series,subjects
     else: new_file=None
     if content is None: content=Content()
     content.title=title; content.description=desc; content.kind=kind; content.body=body if kind=='explanation' else None; content.external_url=external_url if kind in {'slide','video','link'} else None; content.file_name=new_file; content.series_id=s.id; content.subject_id=sub.id
@@ -120,8 +122,11 @@ def content_new():
 
 @admin_bp.route('/contents/<int:id>/edit',methods=['GET','POST'])
 def content_edit(id):
-    content=Content.query.get_or_404(id); result,series,subjects=content_form(content)
-    if result and result.id: db.session.commit(); flash('Material atualizado.','success'); return redirect(url_for('admin.contents'))
+    content=Content.query.get_or_404(id)
+    result,series,subjects=content_form(content)
+    if request.method == 'POST' and result:
+        flash('Material atualizado.','success')
+        return redirect(url_for('admin.contents'))
     return render_template('admin/content_form.html',content=content,series=series,subjects=subjects)
 
 @admin_bp.post('/contents/<int:id>/delete')
@@ -153,7 +158,7 @@ def activities():
         title=request.form.get('title','').strip(); description=request.form.get('description','').strip(); sid=request.form.get('series_id',''); subid=request.form.get('subject_id',''); s=Series.query.get(int(sid)) if sid.isdigit() else None; sub=Subject.query.get(int(subid)) if subid.isdigit() else None
         if not title or not s or not sub or sub.series_id!=s.id: flash('Preencha título, série e matéria.','error')
         else:
-            a=Activity(title=title,description=description,series_id=s.id,subject_id=sub.id); a.set_questions([]); db.session.add(a); db.session.commit(); flash('Atividade criada. Agora adicione as questões.','success'); return redirect(url_for('admin.activity_edit',id=a.id))
+            a=Activity(title=title,description=description,series_id=s.id,subject_id=sub.id); a.set_questions([]); db.session.add(a); db.session.commit(); notify_students(f'Nova atividade: {a.title}',url_for('student.activity',id=a.id)); db.session.commit(); flash('Atividade criada. Agora adicione as questões.','success'); return redirect(url_for('admin.activity_edit',id=a.id))
     return render_template('admin/activities.html',activities=Activity.query.order_by(Activity.id.desc()).all(),series=Series.query.all())
 
 @admin_bp.route('/activities/<int:id>/editar',methods=['GET','POST'])
@@ -163,10 +168,31 @@ def activity_edit(id):
         title=request.form.get('title','').strip(); desc=request.form.get('description','').strip(); questions=[]
         raw=request.form.get('questions_json','').strip()
         try: questions=json.loads(raw) if raw else []
-        except ValueError: flash('Formato de questões inválido.','error'); return render_template('admin/activity_form.html',activity=a,questions=a.get_questions())
-        if not title or not questions: flash('Informe o título e pelo menos uma questão.','error')
-        elif any(not q.get('question') or not q.get('options') or q.get('correct') not in q.get('options',[]) for q in questions): flash('Cada questão precisa de enunciado, alternativas e resposta correta.','error')
-        else: a.title=title; a.description=desc; a.set_questions(questions); db.session.commit(); flash('Atividade salva.','success'); return redirect(url_for('admin.activities'))
+        except (TypeError, ValueError, json.JSONDecodeError):
+            flash('Formato de questões inválido.','error')
+            return render_template('admin/activity_form.html',activity=a,questions=a.get_questions())
+        if not isinstance(questions, list):
+            flash('As questões precisam ser uma lista.','error')
+        elif not title or not questions:
+            flash('Informe o título e pelo menos uma questão.','error')
+        elif any(
+            not isinstance(q, dict) or
+            not isinstance(q.get('question'), str) or
+            not isinstance(q.get('options'), list) or
+            not q.get('question', '').strip() or
+            len([str(o).strip() for o in q.get('options',[]) if str(o).strip()]) < 2 or
+            not isinstance(q.get('correct'), str) or
+            not q.get('correct', '').strip() or
+            q.get('correct') not in q.get('options',[])
+            for q in questions
+        ):
+            flash('Cada questão precisa de enunciado, pelo menos duas alternativas e resposta correta.','error')
+        else:
+            normalized=[]
+            for q in questions:
+                options=[str(o).strip() for o in q['options']]
+                normalized.append({'question':str(q['question']).strip(),'options':options,'correct':str(q['correct']).strip()})
+            a.title=title; a.description=desc; a.set_questions(normalized); db.session.commit(); flash('Atividade salva.','success'); return redirect(url_for('admin.activities'))
     return render_template('admin/activity_form.html',activity=a,questions=a.get_questions())
 
 @admin_bp.post('/activities/<int:id>/delete')
