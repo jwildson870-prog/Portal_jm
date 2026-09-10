@@ -1,74 +1,28 @@
-<link rel="stylesheet" href="../../static/css/portal-jm-suap-theme.css">
 {% extends 'base.html' %}
-{% block title %}
-Login · Portal JM
-{% endblock %}
+{% block title %}Login · Portal JM{% endblock %}
 {% block content %}
 <section class="login-page">
-  <div class="login-atmosphere atom-orbit orbit-one">
-  </div>
-  <div class="login-atmosphere atom-orbit orbit-two">
-  </div>
-  <div class="login-card">
-    <div class="login-brand">
-      <div class="atom-logo" aria-hidden="true">
-        <span class="nucleus">
-          ⚛
-        </span>
-        <i>
-        </i>
-        <i>
-        </i>
-        <i>
-        </i>
-      </div>
-      <span class="eyebrow">
-        PORTAL JM
-      </span>
-      <h1>
-        Química
-      </h1>
-      <p>
-        Entre para acessar seu espaço de aprendizagem.
-      </p>
+    <div class="login-atmosphere atom-orbit orbit-one"></div>
+    <div class="login-atmosphere atom-orbit orbit-two"></div>
+    <div class="login-card">
+        <div class="login-brand">
+            <div class="atom-logo" aria-hidden="true"><span class="nucleus">⚛</span><i></i><i></i><i></i></div>
+            <span class="eyebrow">PORTAL JM</span>
+            <h1>Química</h1>
+            <p>Entre para acessar seu espaço de aprendizagem.</p>
+        </div>
+        <form method="post" class="login-form">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+            <label>E-mail<input name="email" type="email" placeholder="seu@email.com" required autocomplete="email"></label>
+            <label>Senha<input name="password" type="password" placeholder="Digite sua senha" required autocomplete="current-password"></label>
+            <button class="btn login-btn" type="submit">Entrar</button>
+        </form>
+        <a class="google login-google" href="{{url_for('auth.google_login')}}">Continuar com Google</a>
+        <div class="login-divider"><span>ou</span></div>
+        <p class="login-register">Ainda não tem conta? <a href="{{url_for('auth.register')}}">Criar uma conta</a></p>
     </div>
-    <form method="post" class="login-form">
-      <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-      <label>
-        E-mail
-        <input name="email" type="email" placeholder="seu@email.com" required autocomplete="email">
-      </label>
-      <label>
-        Senha
-        <input name="password" type="password" placeholder="Digite sua senha" required autocomplete="current-password">
-      </label>
-      <button class="btn login-btn" type="submit">
-        Entrar
-      </button>
-    </form>
-    <a class="google login-google" href="{{url_for('auth.google_login')}}">
-      Continuar com Google
-    </a>
-    <div class="login-divider">
-      <span>
-        ou
-      </span>
-    </div>
-    <p class="login-register">
-      Ainda não tem conta?
-      <a href="{{url_for('auth.register')}}">
-        Criar uma conta
-      </a>
-    </p>
-  </div>
-  <div class="chem-bubble bubble-a">
-    H₂O
-  </div>
-  <div class="chem-bubble bubble-b">
-    CO₂
-  </div>
-  <div class="chem-bubble bubble-c">
-    NaCl
-  </div>
+    <div class="chem-bubble bubble-a">H₂O</div>
+    <div class="chem-bubble bubble-b">CO₂</div>
+    <div class="chem-bubble bubble-c">NaCl</div>
 </section>
 {% endblock %}

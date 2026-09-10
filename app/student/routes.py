@@ -1,128 +1,69 @@
-from flask import (
-    Blueprint,
-    abort,
-    current_app,
-    flash,
-    redirect,
-    render_template,
-    request,
-    send_from_directory,
-    url_for
-)
-from flask_login import current_user
-from ..models import Series, Subject, Content, StudyProgress
+from flask import Blueprint,render_template,abort,send_from_directory,current_app,redirect,url_for,request
+from flask_login import login_required,current_user
+from sqlalchemy import or_
 from ..extensions import db
-student_bp = Blueprint('student', __name__, url_prefix='/aluno')
-
+from ..models import Series,Subject,Content,Activity,ActivityAttempt,Experiment,Favorite,Progress,Notification
+student_bp=Blueprint('student',__name__,url_prefix='/aluno')
 @student_bp.before_request
-
 def guard():
-    if not current_user.is_authenticated:
-        return redirect_login()
-    if current_user.is_admin:
-        abort(403)
-
-def redirect_login():
-    return redirect(url_for('auth.login', next=request.path))
-
+    if not current_user.is_authenticated:return redirect(url_for('auth.login',next='/aluno/'))
+    if current_user.is_admin:abort(403)
 @student_bp.get('/')
-
-def dashboard():
-    series = Series.query.order_by(Series.id).all()
-    contents = Content.query.order_by(Content.created_at.desc()).all()
-    completed_ids = {p.content_id for p in StudyProgress.query.filter_by(user_id=current_user.id).all()}
-    total = len(contents)
-    completed = len(completed_ids.intersection({c.id for c in contents}))
-    progress = round(completed / total * 100) if total else 0
-    recent = contents[:6]
-    return render_template(
-        'student/dashboard.html',
-        series=series,
-        contents=contents,
-        recent=recent,
-        completed_ids=completed_ids,
-        total_contents=total,
-        completed_contents=completed,
-        progress=progress)
-
-@student_bp.post('/conteudo/<int:id>/concluir')
-
-def toggle_complete(id):
-    content = Content.query.get_or_404(id)
-    progress = StudyProgress.query.filter_by(
-        user_id=current_user.id,
-        content_id=content.id).first()
-    if progress:
-        db.session.delete(progress)
-        flash('Conteúdo marcado como pendente.', 'success')
-    else:
-        db.session.add(StudyProgress(user_id=current_user.id, content_id=content.id))
-        flash('Conteúdo marcado como concluído. 🎉', 'success')
-    db.session.commit()
-    return redirect(request.referrer or url_for('student.dashboard'))
-
-@student_bp.get('/buscar')
-
-def search():
-    q = request.args.get('q', '').strip()
-    query = Content.query
-    if q:
-        like = f'%{q}%'
-        query = query.filter(db.or_(
-            Content.title.ilike(like),
-            Content.description.ilike(like),
-            Content.body.ilike(like)))
-    contents = query.order_by(Content.created_at.desc()).all()
-    completed_ids = {p.content_id for p in StudyProgress.query.filter_by(user_id=current_user.id).all()}
-    return render_template(
-        'student/search.html',
-        q=q,
-        contents=contents,
-        completed_ids=completed_ids)
-
+def dashboard(): return render_template('student/dashboard.html',series=Series.query.order_by(Series.id).all(),favorites=Favorite.query.filter_by(user_id=current_user.id).count(),completed=Progress.query.filter_by(user_id=current_user.id).count(),notifications=Notification.query.filter_by(user_id=current_user.id,read=False).count())
 @student_bp.get('/serie/<int:id>')
-
-def series(id):
-    s = Series.query.get_or_404(id)
-    return render_template('student/series.html', series=s)
-
+def series(id): return render_template('student/series.html',series=Series.query.get_or_404(id))
 @student_bp.get('/materia/<int:id>')
-
-def subject(id):
-    s = Subject.query.get_or_404(id)
-    completed_ids = {p.content_id for p in StudyProgress.query.filter_by(user_id=current_user.id).all()}
-    return render_template(
-        'student/subject.html',
-        subject=s,
-        completed_ids=completed_ids)
-
+def subject(id): return render_template('student/subject.html',subject=Subject.query.get_or_404(id),activities=Activity.query.filter_by(subject_id=id).order_by(Activity.id.desc()).all(),experiments=Experiment.query.filter_by(subject_id=id).order_by(Experiment.id.desc()).all())
 @student_bp.get('/conteudo/<int:id>')
-
 def content(id):
-    c = Content.query.get_or_404(id)
-    completed = StudyProgress.query.filter_by(
-        user_id=current_user.id,
-        content_id=c.id).first() is not None
-    return render_template('student/content.html', content=c, completed=completed)
-
+    c=Content.query.get_or_404(id); fav=Favorite.query.filter_by(user_id=current_user.id,content_id=c.id).first(); done=Progress.query.filter_by(user_id=current_user.id,content_id=c.id).first(); return render_template('student/content.html',content=c,favorite=bool(fav),completed=bool(done))
+@student_bp.post('/conteudo/<int:id>/favoritar')
+def toggle_favorite(id):
+    c=Content.query.get_or_404(id); f=Favorite.query.filter_by(user_id=current_user.id,content_id=c.id).first()
+    if f: db.session.delete(f); flash('Removido dos favoritos.','success')
+    else: db.session.add(Favorite(user_id=current_user.id,content_id=c.id)); flash('Adicionado aos favoritos.','success')
+    db.session.commit(); return redirect(url_for('student.content',id=id))
+@student_bp.post('/conteudo/<int:id>/concluir')
+def complete(id):
+    c=Content.query.get_or_404(id)
+    if not Progress.query.filter_by(user_id=current_user.id,content_id=c.id).first(): db.session.add(Progress(user_id=current_user.id,content_id=c.id)); db.session.commit()
+    flash('Conteúdo marcado como concluído.','success'); return redirect(url_for('student.content',id=id))
+@student_bp.get('/favoritos')
+def favorites(): return render_template('student/favorites.html',favorites=Favorite.query.filter_by(user_id=current_user.id).order_by(Favorite.id.desc()).all())
+@student_bp.get('/atividades')
+def activities(): return render_template('student/activities.html',activities=Activity.query.order_by(Activity.id.desc()).all())
+@student_bp.route('/atividade/<int:id>',methods=['GET','POST'])
+def activity(id):
+    a=Activity.query.get_or_404(id); questions=a.get_questions()
+    if request.method=='POST':
+        answers={str(i):request.form.get(f'q{i}','') for i in range(len(questions))}; correct=sum(1 for i,q in enumerate(questions) if answers[str(i)]==q.get('correct')); total=len(questions); score=(correct/total*10) if total else 0
+        attempt=ActivityAttempt(user_id=current_user.id,activity_id=a.id,answers_json=__import__('json').dumps(answers,ensure_ascii=False),score=score,total=total); db.session.add(attempt); db.session.commit(); return render_template('student/activity_result.html',activity=a,score=score,correct=correct,total=total)
+    return render_template('student/activity.html',activity=a,questions=questions)
+@student_bp.get('/experimentos')
+def experiments(): return render_template('student/experiments.html',experiments=Experiment.query.order_by(Experiment.id.desc()).all())
+@student_bp.get('/experimento/<int:id>')
+def experiment(id): return render_template('student/experiment.html',experiment=Experiment.query.get_or_404(id))
+@student_bp.get('/progresso')
+def progress():
+    total=Content.query.count(); completed=Progress.query.filter_by(user_id=current_user.id).count(); percent=round(completed/total*100) if total else 0
+    attempts=ActivityAttempt.query.filter_by(user_id=current_user.id).order_by(ActivityAttempt.id.desc()).all()
+    return render_template('student/progress.html',total=total,completed=completed,percent=percent,attempts=attempts)
+@student_bp.get('/notificacoes')
+def notifications():
+    items=Notification.query.filter_by(user_id=current_user.id).order_by(Notification.id.desc()).all(); Notification.query.filter_by(user_id=current_user.id,read=False).update({'read':True}); db.session.commit(); return render_template('student/notifications.html',notifications=items)
+@student_bp.get('/busca')
+def search():
+    q=request.args.get('q','').strip(); contents=[]; activities=[]; experiments=[]
+    if q:
+        like=f'%{q}%'; contents=Content.query.filter(or_(Content.title.ilike(like),Content.description.ilike(like),Content.body.ilike(like))).order_by(Content.id.desc()).all(); activities=Activity.query.filter(or_(Activity.title.ilike(like),Activity.description.ilike(like))).order_by(Activity.id.desc()).all(); experiments=Experiment.query.filter(or_(Experiment.title.ilike(like),Experiment.description.ilike(like))).order_by(Experiment.id.desc()).all()
+    return render_template('student/search.html',q=q,contents=contents,activities=activities,experiments=experiments)
 @student_bp.get('/arquivo/<int:id>')
-
 def arquivo(id):
-    c = Content.query.get_or_404(id)
-    if c.kind not in ('file', 'pdf') or not c.file_name:
-        abort(404)
-    return send_from_directory(
-        current_app.config['UPLOAD_FOLDER'],
-        c.file_name,
-        as_attachment=False)
-
+    c=Content.query.get_or_404(id)
+    if c.kind not in ('file','pdf') or not c.file_name: abort(404)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,as_attachment=False)
 @student_bp.get('/pdf/<int:id>')
-
 def pdf(id):
-    c = Content.query.get_or_404(id)
-    if c.kind != 'pdf' or not c.file_name:
-        abort(404)
-    return send_from_directory(
-        current_app.config['UPLOAD_FOLDER'],
-        c.file_name,
-        mimetype='application/pdf')
+    c=Content.query.get_or_404(id)
+    if c.kind!='pdf' or not c.file_name: abort(404)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'],c.file_name,mimetype='application/pdf')

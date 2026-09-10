@@ -99,39 +99,17 @@ O banco continua usando a tabela `series`; 1º, 2º, 3º e 4º ano são registro
 
 A suíte em `tests/test_app.py` cobre isolamento professor/aluno, redirecionamento do login, quatro séries, criação de material no 4º ano, link externo e validação/upload de PDF.
 
+## Recursos adicionados nesta versão
+- Atividades interativas de múltipla escolha com correção automática e nota de 0 a 10.
+- Experimentos de Química com objetivo, materiais, passo a passo, segurança e conclusão.
+- Favoritos por aluno.
+- Marcação de conteúdos concluídos.
+- Notificações para alunos quando materiais, atividades e experimentos são publicados.
+- Busca de conteúdos, atividades e experimentos.
+- Gerenciamento de alunos pelo professor (exclusão de contas de aluno).
+- Visualização de PDF diretamente na página de conteúdo.
+- Botão de exclusão de materiais corrigido.
+- Dashboard do professor e do aluno ampliados.
 
-## Recursos da área do aluno
-
-O painel do aluno inclui uma central de estudos com:
-- resumo de materiais e progresso;
-- indicador de conteúdos concluídos por aluno;
-- marcação individual de conteúdo como concluído/pendente;
-- busca por título, assunto e descrição;
-- acesso rápido às séries e matérias existentes;
-- lista de materiais publicados recentemente;
-- navegação otimizada para celular e computador.
-
-O progresso é salvo no PostgreSQL/Neon na tabela `study_progress`, usando a mesma conta do aluno e o mesmo backend. Não há banco separado para o aplicativo/PWA.
-
-
-## PWA — instalar como aplicativo
-
-O Portal JM – Química é um PWA único, usando o mesmo backend Flask e o mesmo PostgreSQL/Neon do site. Não existe um aplicativo separado.
-
-### Android / Chrome
-1. Abra o Portal JM pela URL pública em HTTPS.
-2. Quando o navegador disponibilizar a instalação, o botão **Instalar app** aparece no cabeçalho.
-3. Toque no botão e confirme **Instalar**. O Portal JM será adicionado à tela inicial e abrirá em modo `standalone`, com aparência de aplicativo.
-4. Se o botão não aparecer, use o menu do navegador e procure **Instalar aplicativo** ou **Adicionar à tela inicial**.
-
-### iPhone / iPad
-No Safari, toque em **Compartilhar** → **Adicionar à Tela de Início**. O portal usa o manifesto e o ícone do PWA para abrir em modo de aplicativo.
-
-### Requisitos
-- produção em **HTTPS** (o Render fornece HTTPS na URL pública);
-- `manifest.json` válido;
-- ícones de 192x192 e 512x512;
-- service worker registrado em `/service-worker.js`;
-- mesmo domínio para o portal, manifesto e service worker.
-
-O service worker mantém os arquivos estáticos em cache e oferece uma tela amigável quando uma navegação não consegue chegar ao servidor. Dados de login e páginas dinâmicas continuam dependentes da conexão, evitando guardar conteúdo sensível da sessão em cache.
+### Google Drive
+O Portal JM mantém o fluxo seguro de compartilhar links do Google Drive. Um Google Drive Picker totalmente integrado exige credenciais OAuth/Picker configuradas no Google Cloud e não deve usar uma chave pública embutida no código.
