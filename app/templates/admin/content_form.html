@@ -1,20 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}{{ 'Editar' if content else 'Adicionar' }} material · Portal JM{% endblock %}
 {% block content %}
-<section class="admin-shell">
-  <div class="admin-page-head"><div><a class="back-link" href="{{url_for('admin.dashboard')}}">← Painel do professor</a><span class="eyebrow">PUBLICAÇÃO</span><h1>{{'Editar material' if content else 'Adicionar material'}}</h1><p>Formulário simples. O servidor Python cuida do processamento.</p></div></div>
-  <form class="publisher" method="post" enctype="multipart/form-data">
+<section class="admin-shell workspace-shell">
+  <div class="workspace-head">
+    <div><a class="back-link" href="{{url_for('admin.dashboard')}}">← Painel do professor</a><span class="eyebrow">PUBLICAÇÃO</span><h1>{{'Editar material' if content else 'Adicionar material'}}</h1><p>Preencha as informações abaixo. Os campos estão separados por etapas para facilitar a publicação.</p></div>
+    <div class="workspace-head-badge">📚 <span>Material</span></div>
+  </div>
+  <form class="publisher workspace-form" method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-    <div class="publisher-card form-grid">
-      <label>Título<input name="title" value="{{content.title if content else ''}}" required></label>
-      <label>Série<select name="series_id" required>{% for s in series %}<option value="{{s.id}}" {% if content and content.series_id==s.id %}selected{% endif %}>{{s.name}}</option>{% endfor %}</select></label>
-      <label>Matéria<select name="subject_id" required>{% for s in subjects %}<option value="{{s.id}}" {% if content and content.subject_id==s.id %}selected{% endif %}>{{s.series.name}} · {{s.name}}</option>{% endfor %}</select></label>
-      <label>Tipo de material<select name="kind" required>{% for value,label in [('file','Arquivo'),('pdf','PDF'),('slide','Slides'),('video','Vídeo'),('link','Link externo'),('explanation','Explicação')] %}<option value="{{value}}" {% if content and content.kind==value %}selected{% endif %}>{{label}}</option>{% endfor %}</select></label>
-      <label class="full">Descrição<textarea name="description">{{content.description if content else ''}}</textarea></label>
+    <div class="workspace-columns">
+      <div class="workspace-main">
+        <div class="publisher-card form-section">
+          <div class="form-section-head"><div class="step-number">1</div><div><span class="eyebrow">INFORMAÇÕES</span><h2>Dados do material</h2><p>Defina o título, série, matéria e tipo.</p></div></div>
+          <div class="form-grid tidy-grid">
+            <label class="field-block full">Título<input name="title" value="{{content.title if content else ''}}" placeholder="Ex.: Ligações químicas" required></label>
+            <label class="field-block">Série<select name="series_id" required>{% for s in series %}<option value="{{s.id}}" {% if content and content.series_id==s.id %}selected{% endif %}>{{s.name}}</option>{% endfor %}</select></label>
+            <label class="field-block">Matéria<select name="subject_id" required>{% for s in subjects %}<option value="{{s.id}}" {% if content and content.subject_id==s.id %}selected{% endif %}>{{s.series.name}} · {{s.name}}</option>{% endfor %}</select></label>
+            <label class="field-block full">Tipo de material<select name="kind" required>{% for value,label in [('file','Arquivo'),('pdf','PDF'),('slide','Slides'),('video','Vídeo'),('link','Link externo'),('explanation','Explicação')] %}<option value="{{value}}" {% if content and content.kind==value %}selected{% endif %}>{{label}}</option>{% endfor %}</select></label>
+            <label class="field-block full">Descrição<textarea name="description" placeholder="Explique rapidamente o que o aluno encontrará neste material.">{{content.description if content else ''}}</textarea></label>
+          </div>
+        </div>
+        <div class="publisher-card form-section">
+          <div class="form-section-head"><div class="step-number">2</div><div><span class="eyebrow">ARQUIVO / LINK</span><h2>Fonte do material</h2><p>Envie um arquivo ou informe um endereço externo.</p></div></div>
+          <div class="field-block"><label>Arquivo do dispositivo<input class="file-input" name="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.ppt,.pptx,.doc,.docx,.txt"></label></div>
+          {% if content and content.file_name %}<div class="source-note">📎 Arquivo atual: <strong>{{content.file_name.split("-")[-1] if content.file_name else ""}}</strong><br><span>Sem novo envio, o arquivo atual será mantido.</span></div>{% endif %}
+          <div class="field-block"><label>Link externo / Google Drive / vídeo<input name="external_url" type="url" value="{{content.external_url if content else ''}}" placeholder="https://..."></label></div>
+          <a class="btn secondary compact-btn" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener noreferrer">↗ Abrir Google Drive</a>
+        </div>
+        <div class="publisher-card form-section">
+          <div class="form-section-head"><div class="step-number">3</div><div><span class="eyebrow">EXPLICAÇÃO</span><h2>Texto complementar</h2><p>Use este espaço quando o material for uma explicação.</p></div></div>
+          <label class="field-block">Conteúdo<textarea name="body" rows="12" placeholder="Escreva a explicação que será apresentada aos alunos.">{{content.body if content else ''}}</textarea></label>
+        </div>
+      </div>
+      <aside class="workspace-side">
+        <div class="publish-summary"><span class="summary-icon">✓</span><h3>Pronto para publicar?</h3><p>Revise os dados antes de salvar. Você poderá editar o material depois.</p><button class="btn admin-primary publish-btn" type="submit">💾 {{'Salvar alterações' if content else 'Publicar material'}}</button></div>
+        <div class="workspace-help"><strong>💡 Dica</strong><p>Use títulos curtos e uma descrição objetiva. Links do Drive, YouTube e outros serviços podem ser usados.</p></div>
+      </aside>
     </div>
-    <div class="publisher-card"><h2>Arquivo ou link</h2><p class="muted">Envie arquivos do aparelho ou cole um link do Google Drive, YouTube ou outro site.</p><label>Arquivo do dispositivo<input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.ppt,.pptx,.doc,.docx,.txt"></label>{% if content and content.file_name %}<p class="source-note">Arquivo atual: <strong>{{content.file_name.split("-")[-1] if content.file_name else ""}}</strong>. Sem novo envio, ele será mantido.</p>{% endif %}<label>Link externo / Google Drive / vídeo<input name="external_url" type="url" value="{{content.external_url if content else ''}}" placeholder="https://..."></label><p><a class="btn secondary" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener noreferrer">Abrir Google Drive</a></p></div>
-    <div class="publisher-card"><h2>Texto da explicação</h2><label>Conteúdo<textarea name="body" rows="10" placeholder="Preencha este campo quando o tipo for Explicação.">{{content.body if content else ''}}</textarea></label></div>
-    <button class="btn admin-primary" type="submit">💾 {{'Salvar alterações' if content else 'Publicar material'}}</button>
   </form>
 </section>
 {% endblock %}
