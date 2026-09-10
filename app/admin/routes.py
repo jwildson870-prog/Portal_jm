@@ -167,7 +167,7 @@ def activity_edit(id):
         except ValueError: flash('Formato de questões inválido.','error'); return render_template('admin/activity_form.html',activity=a,questions=a.get_questions())
         if not title or not questions: flash('Informe o título e pelo menos uma questão.','error')
         elif any(not q.get('question') or not q.get('options') or q.get('correct') not in q.get('options',[]) for q in questions): flash('Cada questão precisa de enunciado, alternativas e resposta correta.','error')
-        else: a.title=title; a.description=desc; a.set_questions(questions); db.session.commit(); notify_students(f'Nova atividade: {a.title}',url_for('student.activity',id=a.id)); db.session.commit(); flash('Atividade salva.','success'); return redirect(url_for('admin.activities'))
+        else: a.title=title; a.description=desc; a.set_questions(questions); db.session.commit(); flash('Atividade salva.','success'); return redirect(url_for('admin.activities'))
     return render_template('admin/activity_form.html',activity=a,questions=a.get_questions())
 
 @admin_bp.post('/activities/<int:id>/delete')

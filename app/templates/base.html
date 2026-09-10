@@ -1,24 +1,102 @@
 <!doctype html>
 <html lang="pt-BR">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}Portal JM – Química{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}"></head>
-<body>
-<header>
-  <a class="brand" href="{{ url_for('admin.dashboard') if current_user.is_authenticated and current_user.is_admin else url_for('student.dashboard') if current_user.is_authenticated else url_for('home') }}">Portal JM – Química</a>
-  {% if current_user.is_authenticated %}
-  <nav>
-    {% if current_user.is_admin %}
-      <span class="area-pill">⚛ ÁREA DO PROFESSOR</span>
-      <a href="{{ url_for('admin.dashboard') }}">Início</a>
-      <a href="{{ url_for('admin.content_new') }}">Adicionar</a>
-      <a href="{{ url_for('admin.contents') }}">Meus materiais</a><a href="{{ url_for('admin.activities') }}">Atividades</a><a href="{{ url_for('admin.experiments') }}">Experimentos</a><a href="{{ url_for('admin.users') }}">Usuários</a>
-    {% else %}
-      <span class="area-pill student-pill">🎓 ÁREA DO ALUNO</span>
-      <a href="{{ url_for('student.dashboard') }}">Materiais</a><a href="{{ url_for('student.activities') }}">Atividades</a><a href="{{ url_for('student.experiments') }}">Experimentos</a><a href="{{ url_for('student.favorites') }}">Favoritos</a><a href="{{ url_for('student.progress') }}">Progresso</a><a href="{{ url_for('student.notifications') }}">🔔</a><a href="{{ url_for('student.search') }}">🔎</a>
-    {% endif %}
-    <form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="linkbtn">Sair</button></form>
-  </nav>
-  {% endif %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>{% block title %}Portal JM – Química{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+</head>
+<body class="{% if current_user.is_authenticated %}app-authenticated{% else %}public-page{% endif %}">
+
+{% if current_user.is_authenticated %}
+<header class="topbar">
+  <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-controls="sideMenu" aria-expanded="false">☰</button>
+  <a class="brand" href="{{ url_for('admin.dashboard') if current_user.is_admin else url_for('student.dashboard') }}">Portal JM – Química</a>
+  <span class="topbar-spacer"></span>
 </header>
-<main>{% with messages=get_flashed_messages(with_categories=true) %}{% for category,msg in messages %}<div class="flash {{category}}">{{msg}}</div>{% endfor %}{% endwith %}{% block content %}{% endblock %}</main>
-<footer>Portal JM – Química · Educação e ciência</footer>
-</body></html>
+
+<aside class="side-menu" id="sideMenu" aria-label="Menu principal">
+  <div class="side-brand">
+    <div class="side-atom">⚛</div>
+    <div>
+      <strong>Portal JM</strong>
+      <small>Química</small>
+    </div>
+    <button class="menu-close" id="menuClose" type="button" aria-label="Fechar menu">×</button>
+  </div>
+
+  <div class="side-area {% if current_user.is_admin %}teacher-area{% else %}student-area{% endif %}">
+    {% if current_user.is_admin %}
+      <span>⚛ ÁREA DO PROFESSOR</span>
+    {% else %}
+      <span>🎓 ÁREA DO ALUNO</span>
+    {% endif %}
+  </div>
+
+  <nav class="side-nav">
+    {% if current_user.is_admin %}
+      <a class="side-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}" href="{{ url_for('admin.dashboard') }}"><span>⌂</span> Início</a>
+      <a class="side-link {% if request.endpoint in ['admin.content_new','admin.content_edit'] %}active{% endif %}" href="{{ url_for('admin.content_new') }}"><span>＋</span> Adicionar</a>
+      <a class="side-link {% if request.endpoint in ['admin.contents','admin.series_detail'] %}active{% endif %}" href="{{ url_for('admin.contents') }}"><span>▣</span> Meus materiais</a>
+      <a class="side-link {% if request.endpoint in ['admin.activities','admin.activity_edit'] %}active{% endif %}" href="{{ url_for('admin.activities') }}"><span>✓</span> Atividades</a>
+      <a class="side-link {% if request.endpoint in ['admin.experiments','admin.experiment_edit'] %}active{% endif %}" href="{{ url_for('admin.experiments') }}"><span>⚗</span> Experimentos</a>
+      <a class="side-link {% if request.endpoint in ['admin.users','admin.user_delete'] %}active{% endif %}" href="{{ url_for('admin.users') }}"><span>♙</span> Usuários</a>
+      <a class="side-link {% if request.endpoint in ['admin.series_list','admin.series_edit'] %}active{% endif %}" href="{{ url_for('admin.series_list') }}"><span>▤</span> Turmas / séries</a>
+      <a class="side-link {% if request.endpoint in ['admin.subjects_list','admin.subject_edit'] %}active{% endif %}" href="{{ url_for('admin.subjects_list') }}"><span>◫</span> Matérias</a>
+    {% else %}
+      <a class="side-link {% if request.endpoint == 'student.dashboard' %}active{% endif %}" href="{{ url_for('student.dashboard') }}"><span>⌂</span> Materiais</a>
+      <a class="side-link {% if request.endpoint == 'student.activities' or request.endpoint == 'student.activity' %}active{% endif %}" href="{{ url_for('student.activities') }}"><span>✓</span> Atividades</a>
+      <a class="side-link {% if request.endpoint == 'student.experiments' or request.endpoint == 'student.experiment' %}active{% endif %}" href="{{ url_for('student.experiments') }}"><span>⚗</span> Experimentos</a>
+      <a class="side-link {% if request.endpoint == 'student.favorites' %}active{% endif %}" href="{{ url_for('student.favorites') }}"><span>★</span> Favoritos</a>
+      <a class="side-link {% if request.endpoint == 'student.progress' %}active{% endif %}" href="{{ url_for('student.progress') }}"><span>◔</span> Progresso</a>
+      <a class="side-link {% if request.endpoint == 'student.notifications' %}active{% endif %}" href="{{ url_for('student.notifications') }}"><span>🔔</span> Notificações</a>
+      <a class="side-link {% if request.endpoint == 'student.search' %}active{% endif %}" href="{{ url_for('student.search') }}"><span>⌕</span> Buscar</a>
+    {% endif %}
+  </nav>
+
+  <div class="side-bottom">
+    <div class="side-user">
+      <div class="user-avatar">{{ current_user.name[:1]|upper }}</div>
+      <div><strong>{{ current_user.name }}</strong><small>{{ 'Professor' if current_user.is_admin else 'Aluno' }}</small></div>
+    </div>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="side-logout" type="submit"><span>↪</span> Sair</button>
+    </form>
+  </div>
+</aside>
+<div class="menu-overlay" id="menuOverlay"></div>
+{% endif %}
+
+<main class="site-main">
+  {% with messages=get_flashed_messages(with_categories=true) %}
+    {% for category,msg in messages %}<div class="flash {{category}}">{{msg}}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">Portal JM – Química · Educação e ciência</footer>
+
+{% if current_user.is_authenticated %}
+<script>
+(function(){
+  const toggle=document.getElementById('menuToggle');
+  const close=document.getElementById('menuClose');
+  const menu=document.getElementById('sideMenu');
+  const overlay=document.getElementById('menuOverlay');
+  function setOpen(open){
+    menu.classList.toggle('open',open);
+    overlay.classList.toggle('open',open);
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+    document.body.classList.toggle('menu-open',open);
+  }
+  toggle?.addEventListener('click',()=>setOpen(!menu.classList.contains('open')));
+  close?.addEventListener('click',()=>setOpen(false));
+  overlay?.addEventListener('click',()=>setOpen(false));
+  menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setOpen(false)));
+})();
+</script>
+{% endif %}
+</body>
+</html>

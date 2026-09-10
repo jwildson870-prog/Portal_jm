@@ -160,3 +160,30 @@ footer{text-align:center;padding:35px;color:var(--text-dim)}
 .file-preview{margin-top:15px;padding:15px;border:1px solid var(--border-soft);border-radius:16px;background:rgba(255,255,255,.03)}.file-preview strong{display:block;margin-bottom:10px}.file-preview img{display:block;max-width:100%;max-height:360px;margin:auto;border-radius:12px;object-fit:contain}.file-preview .preview-frame{margin:0;height:420px}
 
 .progress-track{height:14px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px}
+
+/* =========================================================
+   MENU LATERAL OFICIAL DO PORTAL JM
+   O menu só existe quando há sessão autenticada.
+========================================================= */
+body.app-authenticated{padding-top:0}
+.topbar{height:66px;position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;gap:14px;padding:0 20px 0 22px;background:rgba(5,13,24,.92);border-bottom:1px solid var(--border-soft);backdrop-filter:blur(16px)}
+.topbar .brand{font-size:1rem}
+.topbar-spacer{flex:1}
+.menu-toggle{display:none;width:42px;height:42px;border:1px solid var(--border-soft);border-radius:12px;background:rgba(255,255,255,.05);color:var(--text);font-size:1.25rem;cursor:pointer}
+.side-menu{position:fixed;left:0;top:0;bottom:0;width:265px;z-index:100;display:flex;flex-direction:column;background:rgba(5,14,27,.97);border-right:1px solid var(--border-soft);box-shadow:18px 0 50px rgba(0,0,0,.25);backdrop-filter:blur(18px)}
+.side-brand{min-height:76px;display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid var(--border-soft)}
+.side-atom{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:1.35rem;box-shadow:0 0 22px rgba(37,183,255,.12)}
+.side-brand strong{display:block;font-size:1rem}.side-brand small{display:block;color:var(--text-dim);margin-top:2px}.menu-close{display:none;margin-left:auto;border:0;background:none;color:var(--text-muted);font-size:1.8rem;cursor:pointer}
+.side-area{margin:18px 14px 10px;padding:9px 11px;border-radius:11px;border:1px solid rgba(37,183,255,.22);background:rgba(37,183,255,.08);color:#8fd6ff;font-size:.68rem;font-weight:900;letter-spacing:.05em}.side-area.student-area{border-color:rgba(120,200,255,.2)}
+.side-nav{display:grid;gap:4px;padding:4px 10px;overflow:auto}.side-link{display:flex;align-items:center;gap:11px;min-height:45px;padding:10px 12px;border-radius:11px;color:var(--text-muted);text-decoration:none;font-weight:700;transition:.16s}.side-link span{width:20px;text-align:center;font-size:1.05rem;color:var(--text-dim)}.side-link:hover{background:rgba(255,255,255,.05);color:var(--text)}.side-link.active{background:linear-gradient(90deg,rgba(37,183,255,.16),rgba(37,183,255,.05));color:var(--text);border:1px solid rgba(37,183,255,.16)}.side-link.active span{color:var(--accent)}
+.side-bottom{margin-top:auto;padding:14px;border-top:1px solid var(--border-soft);display:grid;gap:10px}.side-user{display:flex;align-items:center;gap:10px;min-width:0}.user-avatar{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;font-weight:900}.side-user strong,.side-user small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.side-user strong{font-size:.88rem}.side-user small{font-size:.74rem;color:var(--text-dim);margin-top:2px}.side-logout{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border:1px solid rgba(255,120,120,.16);border-radius:10px;background:rgba(255,80,80,.06);color:#ffb0b0;font:inherit;font-weight:750;cursor:pointer}.side-logout:hover{background:rgba(255,80,80,.1)}
+.menu-overlay{display:none}.app-authenticated .site-main{margin-left:265px;padding-top:66px;min-height:calc(100vh - 66px)}.app-authenticated .site-footer{margin-left:265px}.public-page .site-main{min-height:calc(100vh - 70px)}
+
+/* Página inicial/login pública nunca recebe menu lateral. */
+.public-page .site-footer{margin-left:0}
+
+@media(max-width:900px){
+  .side-menu{width:280px;transform:translateX(-102%);transition:transform .22s ease}.side-menu.open{transform:translateX(0)}
+  .menu-toggle{display:block}.menu-close{display:block}.topbar{padding-left:14px}.app-authenticated .site-main{margin-left:0}.app-authenticated .site-footer{margin-left:0}.menu-overlay{display:block;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.58);opacity:0;pointer-events:none;transition:.2s}.menu-overlay.open{opacity:1;pointer-events:auto}.menu-open{overflow:hidden}
+}
+@media(max-width:650px){.topbar{height:60px}.app-authenticated .site-main{padding-top:60px}.side-menu{width:min(86vw,300px)}.side-brand{min-height:68px}.public-page .site-main{min-height:calc(100vh - 60px)}}

@@ -17,6 +17,10 @@ class User(UserMixin, db.Model):
     def check_password(self, p): return bool(self.password_hash) and check_password_hash(self.password_hash, p)
     @property
     def is_admin(self): return self.role == 'admin'
+    activity_attempts = db.relationship('ActivityAttempt', back_populates='user', cascade='all, delete-orphan')
+    favorites = db.relationship('Favorite', backref='user', cascade='all, delete-orphan')
+    progress = db.relationship('Progress', backref='user', cascade='all, delete-orphan')
+    notifications = db.relationship('Notification', backref='user', cascade='all, delete-orphan')
 
 class Series(db.Model):
     __tablename__ = 'series'
@@ -50,6 +54,8 @@ class Content(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    favorites = db.relationship('Favorite', backref='content', cascade='all, delete-orphan')
+    progress = db.relationship('Progress', backref='content', cascade='all, delete-orphan')
 
 class Activity(db.Model):
     __tablename__ = 'activities'
@@ -61,6 +67,7 @@ class Activity(db.Model):
     questions_json = db.Column(db.Text, nullable=False, default='[]')
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    attempts = db.relationship('ActivityAttempt', back_populates='activity', cascade='all, delete-orphan')
     def get_questions(self):
         try: return json.loads(self.questions_json or '[]')
         except (TypeError, ValueError): return []
@@ -75,8 +82,8 @@ class ActivityAttempt(db.Model):
     score = db.Column(db.Float, nullable=False, default=0)
     total = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user = db.relationship('User', backref='activity_attempts')
-    activity = db.relationship('Activity', backref='attempts')
+    user = db.relationship('User', back_populates='activity_attempts')
+    activity = db.relationship('Activity', back_populates='attempts')
     def get_answers(self):
         try: return json.loads(self.answers_json or '{}')
         except (TypeError, ValueError): return {}
@@ -102,8 +109,6 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     content_id = db.Column(db.Integer, db.ForeignKey('contents.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user = db.relationship('User', backref='favorites')
-    content = db.relationship('Content', backref='favorites')
     __table_args__ = (db.UniqueConstraint('user_id', 'content_id', name='uq_favorite'),)
 
 class Progress(db.Model):
@@ -112,8 +117,6 @@ class Progress(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     content_id = db.Column(db.Integer, db.ForeignKey('contents.id'), nullable=False)
     completed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user = db.relationship('User', backref='progress')
-    content = db.relationship('Content', backref='progress')
     __table_args__ = (db.UniqueConstraint('user_id', 'content_id', name='uq_progress'),)
 
 class Notification(db.Model):
@@ -124,4 +127,3 @@ class Notification(db.Model):
     link = db.Column(db.String(500))
     read = db.Column(db.Boolean, default=False, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user = db.relationship('User', backref='notifications')

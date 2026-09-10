@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
-from flask import Flask,render_template
-from flask_login import LoginManager
+from flask import Flask,render_template,redirect,url_for
+from flask_login import LoginManager,current_user
 from flask_wtf import CSRFProtect
 from .extensions import db
 
@@ -21,7 +21,10 @@ def create_app(test_config=None):
     from .admin.routes import admin_bp
     app.register_blueprint(auth_bp); app.register_blueprint(student_bp); app.register_blueprint(admin_bp)
     @app.get('/')
-    def home(): return render_template('index.html')
+    def home():
+        if current_user.is_authenticated:
+            return redirect(url_for('admin.dashboard' if current_user.is_admin else 'student.dashboard'))
+        return render_template('index.html')
     @app.errorhandler(403)
     def forbidden(e): return render_template('error.html',message='Acesso negado.'),403
     @app.errorhandler(404)
