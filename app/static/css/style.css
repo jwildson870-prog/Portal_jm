@@ -61,6 +61,17 @@ body.app-authenticated{padding-top:0}
 .menu-toggle:hover{background:var(--green-soft);color:var(--green)}
 .menu-toggle:active{background:var(--green-hover)}
 
+.side-install{
+  width:100%;
+  border:0;
+  text-align:left;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+}
+.side-install[hidden]{display:none}
+.side-install:hover{background:rgba(255,255,255,.08);color:#fff}
+
 /* ---------- Menu lateral ---------- */
 .menu-check{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .side-menu{
