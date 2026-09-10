@@ -691,3 +691,224 @@ tbody tr:hover{background:rgba(56,189,248,.045)}
   .admin-stat{padding:12px 10px}
   .student-shell .grid{grid-template-columns:1fr}
 }
+
+/* =========================================================
+   LOGIN — PORTAL JM
+   Identidade visual da aplicação, otimizada para celular e desktop.
+   Somente apresentação: não altera autenticação ou rotas.
+========================================================= */
+.public-page .site-main{
+  min-height:calc(100vh - 56px);
+  padding:0;
+}
+.public-page .site-footer{
+  padding:12px 16px 18px;
+  color:#647b94;
+  font-size:.75rem;
+}
+.login-page{
+  position:relative;
+  min-height:calc(100vh - 56px);
+  display:grid;
+  place-items:center;
+  padding:48px 20px 44px;
+  overflow:hidden;
+  isolation:isolate;
+}
+.login-page::before{
+  content:"";
+  position:absolute;
+  width:620px;height:620px;
+  left:-270px;top:-250px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,.14),transparent 66%);
+  z-index:-2;
+}
+.login-page::after{
+  content:"";
+  position:absolute;
+  width:560px;height:560px;
+  right:-260px;bottom:-260px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.16),transparent 68%);
+  z-index:-2;
+}
+.login-card{
+  position:relative;
+  z-index:3;
+  width:min(100%,460px);
+  padding:34px;
+  border:1px solid rgba(96,165,250,.20);
+  border-radius:26px;
+  background:linear-gradient(160deg,rgba(13,32,54,.97),rgba(6,18,32,.98));
+  box-shadow:0 28px 80px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.015) inset;
+  backdrop-filter:blur(18px);
+}
+.login-brand{text-align:center;margin-bottom:28px}
+.login-brand .eyebrow{
+  display:inline-block;
+  margin:0 0 8px;
+  color:#4dd4f5;
+  font-size:.72rem;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.18em;
+}
+.login-brand h1{
+  margin:0;
+  color:#f4f8ff;
+  font-size:clamp(2rem,7vw,2.7rem);
+  line-height:1.05;
+  letter-spacing:-.045em;
+}
+.login-brand p{
+  max-width:340px;
+  margin:12px auto 0;
+  color:#9bb0c7;
+  font-size:.96rem;
+  line-height:1.5;
+}
+.atom-logo{
+  position:relative;
+  width:72px;height:72px;
+  margin:0 auto 18px;
+  display:grid;
+  place-items:center;
+  border-radius:21px;
+  background:linear-gradient(135deg,#2563eb,#22c1ee);
+  color:#fff;
+  box-shadow:0 16px 34px rgba(37,99,235,.28);
+  overflow:hidden;
+}
+.atom-logo::before,.atom-logo::after{
+  content:"";
+  position:absolute;
+  width:48px;height:18px;
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:50%;
+  transform:rotate(35deg);
+}
+.atom-logo::after{transform:rotate(-35deg)}
+.atom-logo .nucleus{position:relative;z-index:2;font-size:1.75rem;font-weight:700}
+.atom-logo i{display:none}
+.login-form{display:grid;gap:17px}
+.login-form label{
+  display:grid;
+  gap:8px;
+  color:#dce8f5;
+  font-size:.88rem;
+  font-weight:750;
+}
+.login-form input{
+  width:100%;
+  min-height:54px;
+  padding:13px 15px;
+  border:1px solid #223c59;
+  border-radius:14px;
+  outline:none;
+  background:#091a2d;
+  color:#f4f8ff;
+  box-shadow:0 5px 16px rgba(0,0,0,.10) inset;
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.login-form input::placeholder{color:#6f849b}
+.login-form input:focus{
+  border-color:#38bdf8;
+  background:#0b1e34;
+  box-shadow:0 0 0 3px rgba(56,189,248,.12);
+}
+.login-btn{
+  width:100%;
+  min-height:54px;
+  margin-top:2px;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#2563eb,#22bfe8);
+  color:#fff;
+  font-size:1rem;
+  font-weight:850;
+  box-shadow:0 12px 26px rgba(37,99,235,.25);
+  cursor:pointer;
+  transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+}
+.login-btn:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 15px 30px rgba(37,99,235,.30)}
+.login-btn:active{transform:translateY(0)}
+.login-google{
+  width:100%;
+  min-height:52px;
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px 16px;
+  border:1px solid #243b57;
+  border-radius:14px;
+  background:#0d1b2d;
+  color:#e9f1fa;
+  font-weight:800;
+  text-align:center;
+  transition:background .16s ease,border-color .16s ease,transform .16s ease;
+}
+.login-google::before{content:"G";display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#4285f4;font-weight:900;font-size:.82rem}
+.login-google:hover{background:#12243b;border-color:#345777;color:#fff;transform:translateY(-1px)}
+.login-divider{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin:21px 0 17px;
+  color:#6f849b;
+  font-size:.82rem;
+}
+.login-divider::before,.login-divider::after{content:"";height:1px;flex:1;background:#1d3552}
+.login-divider span{padding:0 2px}
+.login-register{
+  margin:0;
+  text-align:center;
+  color:#91a6bc;
+  font-size:.9rem;
+}
+.login-register a{font-weight:750;color:#4dc7f3}
+.login-register a:hover{color:#8be1ff}
+.login-atmosphere{
+  position:absolute;
+  z-index:-1;
+  border:1px solid rgba(56,189,248,.08);
+  border-radius:50%;
+  pointer-events:none;
+}
+.atom-orbit{width:430px;height:150px;opacity:.45}
+.orbit-one{left:-150px;top:22%;transform:rotate(-25deg)}
+.orbit-two{right:-150px;bottom:20%;transform:rotate(25deg);border-color:rgba(59,130,246,.09)}
+.chem-bubble{
+  position:absolute;
+  z-index:-1;
+  color:rgba(148,168,191,.34);
+  font-size:1.1rem;
+  font-weight:750;
+  letter-spacing:.03em;
+  user-select:none;
+}
+.bubble-a{left:8%;top:27%}.bubble-b{right:10%;top:33%}.bubble-c{right:12%;bottom:24%}
+.public-page .flash{width:min(100% - 32px,460px);margin:18px auto 0;position:relative;z-index:5}
+
+@media(max-width:600px){
+  .public-page .site-main{min-height:calc(100vh - 46px)}
+  .login-page{min-height:calc(100vh - 46px);padding:26px 14px 30px;align-items:start}
+  .login-card{margin-top:8px;padding:27px 20px 24px;border-radius:22px}
+  .login-brand{margin-bottom:23px}
+  .atom-logo{width:62px;height:62px;border-radius:18px;margin-bottom:15px}
+  .login-brand h1{font-size:2.15rem}
+  .login-brand p{font-size:.9rem;margin-top:10px}
+  .login-form{gap:14px}
+  .login-form input,.login-btn{min-height:52px}
+  .login-google{min-height:50px}
+  .login-atmosphere{display:none}
+  .chem-bubble{font-size:.9rem;opacity:.65}
+  .bubble-a{left:5%;top:13%}.bubble-b{right:6%;top:18%}.bubble-c{right:7%;bottom:12%}
+}
+@media(max-width:380px){
+  .login-page{padding-left:10px;padding-right:10px}
+  .login-card{padding:24px 17px 22px}
+  .login-brand h1{font-size:2rem}
+}
