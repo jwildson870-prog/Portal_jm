@@ -1,7 +1,7 @@
 import os, uuid, json
 from pathlib import Path
 from urllib.parse import urlparse
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, current_app, send_from_directory
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from ..extensions import db
@@ -134,7 +134,6 @@ def content_delete(id):
 
 @admin_bp.get('/file/<filename>')
 def file(filename):
-    from flask import send_from_directory
     return send_from_directory(current_app.config['UPLOAD_FOLDER'],filename,as_attachment=False)
 
 @admin_bp.get('/users')

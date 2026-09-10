@@ -113,3 +113,10 @@ A suíte em `tests/test_app.py` cobre isolamento professor/aluno, redirecionamen
 
 ### Google Drive
 O Portal JM mantém o fluxo seguro de compartilhar links do Google Drive. Um Google Drive Picker totalmente integrado exige credenciais OAuth/Picker configuradas no Google Cloud e não deve usar uma chave pública embutida no código.
+
+
+## Uploads persistentes no Render
+
+O Portal JM salva os arquivos enviados em `UPLOAD_FOLDER`. Em desenvolvimento, o padrão continua sendo `uploads/`. No Render, configure `UPLOAD_FOLDER` para o mesmo caminho usado como **Mount Path** de um Persistent Disk, por exemplo `/var/data/uploads`.
+
+O Render informa que o filesystem normal do serviço é efêmero; somente os arquivos dentro do Mount Path do Persistent Disk são preservados entre reinícios e deploys. Persistent Disk exige serviço pago e mantém o serviço em uma única instância.
