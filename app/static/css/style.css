@@ -187,3 +187,16 @@ body.app-authenticated{padding-top:0}
   .menu-toggle{display:block}.menu-close{display:block}.topbar{padding-left:14px}.app-authenticated .site-main{margin-left:0}.app-authenticated .site-footer{margin-left:0}.menu-overlay{display:block;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.58);opacity:0;pointer-events:none;transition:.2s}.menu-overlay.open{opacity:1;pointer-events:auto}.menu-open{overflow:hidden}
 }
 @media(max-width:650px){.topbar{height:60px}.app-authenticated .site-main{padding-top:60px}.side-menu{width:min(86vw,300px)}.side-brand{min-height:68px}.public-page .site-main{min-height:calc(100vh - 60px)}}
+
+/* ===== Nova identidade visual Portal JM ===== */
+html.dark-mode{filter:none}
+html.dark-mode body{background:#0c1220;color:#edf2fb}
+html.dark-mode .topbar,html.dark-mode .site-main,html.dark-mode .site-footer{background:#0c1220;color:#edf2fb}
+html.dark-mode .topbar{border-color:#263149}
+html.dark-mode .site-main .card,html.dark-mode .site-main section,html.dark-mode .site-main article,html.dark-mode .site-main .panel,html.dark-mode .site-main .content-card{background:#151d2e;color:#edf2fb;border-color:#2a3650}
+html.dark-mode input,html.dark-mode select,html.dark-mode textarea{background:#11192a;color:#edf2fb;border-color:#33405b}
+.theme-toggle{border:1px solid var(--border-soft);background:var(--panel);color:var(--text);border-radius:11px;width:42px;height:38px;cursor:pointer;font-size:1rem}
+.appearance-panel{border-top:1px solid rgba(255,255,255,.08);padding:14px 4px 10px;margin-top:10px}.appearance-panel strong{display:block;font-size:.78rem;color:var(--text-muted);margin-bottom:8px}.appearance-row,.layout-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px}.appearance-row button,.layout-row button{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);padding:7px 5px;border-radius:8px;font-size:.68rem;cursor:pointer}.appearance-row button:hover,.layout-row button:hover{border-color:var(--accent);color:var(--accent)}
+html.layout-mobile .site-main{max-width:560px;margin-left:auto;margin-right:auto}.site-main{transition:max-width .2s ease,margin .2s ease}
+@media(min-width:901px){html.layout-mobile .site-main{margin-left:calc((100% - 560px)/2);margin-right:0}}
+@media(max-width:900px){.theme-toggle{margin-left:auto}.appearance-row,.layout-row{grid-template-columns:1fr 1fr 1fr}.topbar{padding-left:14px!important}.site-main{width:100%}}

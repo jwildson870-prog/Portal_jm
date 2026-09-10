@@ -14,6 +14,7 @@
   <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-controls="sideMenu" aria-expanded="false">☰</button>
   <a class="brand" href="{{ url_for('admin.dashboard') if current_user.is_admin else url_for('student.dashboard') }}">Portal JM – Química</a>
   <span class="topbar-spacer"></span>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema">🌙</button>
 </header>
 
 <aside class="side-menu" id="sideMenu" aria-label="Menu principal">
@@ -56,6 +57,19 @@
   </nav>
 
   <div class="side-bottom">
+    <div class="appearance-panel">
+      <strong>🎨 Aparência</strong>
+      <div class="appearance-row">
+        <button type="button" data-theme="light">☀ Claro</button>
+        <button type="button" data-theme="dark">🌙 Escuro</button>
+        <button type="button" data-theme="system">🌓 Sistema</button>
+      </div>
+      <div class="layout-row" aria-label="Versão da interface">
+        <button type="button" data-layout="auto">↔ Automático</button>
+        <button type="button" data-layout="desktop">▣ Computador</button>
+        <button type="button" data-layout="mobile">▯ Celular</button>
+      </div>
+    </div>
     <div class="side-user">
       <div class="user-avatar">{{ current_user.name[:1]|upper }}</div>
       <div><strong>{{ current_user.name }}</strong><small>{{ 'Professor' if current_user.is_admin else 'Aluno' }}</small></div>
@@ -98,5 +112,32 @@
 })();
 </script>
 {% endif %}
+
+<script>
+(function(){
+  const root=document.documentElement;
+  const theme=localStorage.getItem('portaljm-theme')||'system';
+  const layout=localStorage.getItem('portaljm-layout')||'auto';
+  function applyTheme(t){
+    const dark=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    root.classList.toggle('dark-mode',dark);
+    const b=document.getElementById('themeToggle');
+    if(b)b.textContent=dark?'☀️':'🌙';
+  }
+  function applyLayout(l){
+    root.classList.remove('layout-mobile','layout-desktop');
+    if(l==='mobile')root.classList.add('layout-mobile');
+    if(l==='desktop')root.classList.add('layout-desktop');
+  }
+  applyTheme(theme); applyLayout(layout);
+  document.getElementById('themeToggle')?.addEventListener('click',()=>{
+    const next=root.classList.contains('dark-mode')?'light':'dark';
+    localStorage.setItem('portaljm-theme',next); applyTheme(next);
+  });
+  document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('portaljm-theme',b.dataset.theme);applyTheme(b.dataset.theme);}));
+  document.querySelectorAll('[data-layout]').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('portaljm-layout',b.dataset.layout);applyLayout(b.dataset.layout);}));
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if((localStorage.getItem('portaljm-theme')||'system')==='system')applyTheme('system');});
+})();
+</script>
 </body>
 </html>
