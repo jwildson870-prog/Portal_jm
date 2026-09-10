@@ -3,17 +3,17 @@
 Portal JM — tema inspirado em sistemas acadêmicos como SUAP
 Camada visual: não altera rotas, banco ou regras de negócio.
 ========================================================= */
-:root {
-  --pjm-primary: #0b5cab;
-  --pjm-primary-dark: #08477f;
-  --pjm-primary-light: #eaf3fb;
-  --pjm-bg: #f3f5f7;
-  --pjm-surface: #ffffff;
-  --pjm-text: #263238;
-  --pjm-muted: #66727d;
-  --pjm-border: #dce2e7;
-  --pjm-shadow: 0 2px 10px rgba(22, 38, 55, .08);
-  --pjm-radius: 6px;
+ :root {
+  --pjm-primary: #3b82f6;
+  --pjm-primary-dark: #1d4ed8;
+  --pjm-primary-light: #172d49;
+  --pjm-bg: #070d17;
+  --pjm-surface: #111c2d;
+  --pjm-text: #e5edf7;
+  --pjm-muted: #9aa9bc;
+  --pjm-border: #26364d;
+  --pjm-shadow: 0 10px 28px rgba(0,0,0,.22);
+  --pjm-radius: 14px;
 }
 
 html, body {
@@ -91,7 +91,7 @@ button:active, .btn:active {
 /* Forms */
 
 input, select, textarea {
-  border: 1px solid #cbd3da !important;
+  border: 1px solid #31445e !important;
   border-radius: 4px !important;
   background: #fff !important;
   color: var(--pjm-text) !important;
@@ -100,7 +100,7 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
   outline: none !important;
   border-color: var(--pjm-primary) !important;
-  box-shadow: 0 0 0 2px rgba(11, 92, 171, .12) !important;
+  box-shadow: 0 0 0 2px rgba(96,165,250,.16) !important;
 }
 
 /* Tables */
@@ -116,8 +116,8 @@ table {
 }
 
 th {
-  background: #eef3f7 !important;
-  color: #34424e;
+  background: #18263a !important;
+  color: #dbe7f5;
   font-weight: 600;
 }
 
@@ -130,7 +130,7 @@ tr:last-child td {
 }
 
 tbody tr:hover {
-  background: #f7faff;
+  background: #16243a;
 }
 
 /* Badges / status */
@@ -180,7 +180,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
 .portal-body {
   background: radial-gradient(circle at 8% -5%, rgba(11, 140, 126, .07), transparent 28%),
     radial-gradient(circle at 96% 8%, rgba(11, 92, 171, .06), transparent 26%),
-    #f4f7f8 !important;
+    #070d17 !important;
 }
 
 .portal-main {
@@ -224,7 +224,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
   margin: 0 0 24px;
   border: 1px solid #dce7e5;
   border-radius: 24px;
-  background: linear-gradient(135deg, #ffffff 0%, #f7fbfb 58%, #eef8f6 100%);
+  background: linear-gradient(135deg, #111c2d 0%, #f7fbfb 58%, #eef8f6 100%);
   box-shadow: 0 14px 34px rgba(32, 55, 62, .08);
 }
 
@@ -308,7 +308,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
   min-height: 108px;
   padding: 18px 19px;
   border-radius: 18px;
-  border-color: #e0e6e8;
+  border-color: #26364d;
   background: #fff;
   box-shadow: 0 8px 22px rgba(28, 45, 51, .055);
   grid-template-columns: 48px 1fr;
@@ -321,7 +321,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
   display: grid;
   place-items: center;
   border-radius: 15px;
-  background: #edf8f6;
+  background: #172d49;
   font-size: 1.55rem;
   filter: none;
 }
@@ -333,7 +333,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
 
 .portal-content .admin-stat small {
   font-size: .84rem;
-  color: #7a858b;
+  color: #91a2b7;
 }
 
 /* Seção de ações */
@@ -358,7 +358,7 @@ Somente apresentação: não altera rotas, componentes ou regras.
   gap: 15px;
   padding: 19px;
   border-radius: 19px;
-  border-color: #e0e6e8;
+  border-color: #26364d;
   background: #fff;
   box-shadow: 0 8px 22px rgba(28, 45, 51, .055);
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
@@ -366,21 +366,21 @@ Somente apresentação: não altera rotas, componentes ou regras.
 
 .portal-content .admin-action-card:hover {
   transform: translateY(-3px);
-  border-color: #b9dcd7;
+  border-color: #3d628f;
   box-shadow: 0 14px 28px rgba(28, 45, 51, .09);
 }
 
 .portal-content .admin-action-card.featured {
-  background: linear-gradient(135deg, #ffffff, #f1faf8);
-  border-color: #cfe8e4;
+  background: linear-gradient(135deg, #111c2d, #13233a);
+  border-color: #315a87;
 }
 
 .portal-content .action-icon {
   width: 52px;
   height: 52px;
   border-radius: 15px;
-  border: 1px solid #d8ece8;
-  background: #edf8f6;
+  border: 1px solid #294b72;
+  background: #172d49;
   box-shadow: none;
   font-size: 1.45rem;
 }
@@ -401,8 +401,8 @@ Somente apresentação: não altera rotas, componentes ou regras.
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #edf8f6;
-  color: #0b8a7d;
+  background: #172d49;
+  color: #60a5fa;
   font-size: 1.2rem;
   transition: transform .16s ease;
 }
@@ -417,9 +417,9 @@ Somente apresentação: não altera rotas, componentes ou regras.
   margin-top: 20px;
   padding: 15px 17px;
   border-radius: 15px;
-  background: #f7fafb;
-  border-color: #e0e7e9;
-  color: #68757b;
+  background: #101c2e;
+  border-color: #293e59;
+  color: #9fb0c4;
   font-size: .9rem;
 }
 
@@ -436,19 +436,19 @@ Somente apresentação: não altera rotas, componentes ou regras.
   font-size: .95rem !important;
   font-weight: 700 !important;
   line-height: 1.2 !important;
-  background: linear-gradient(135deg, #087d71, #00665d);
-  box-shadow: 0 7px 18px rgba(0, 102, 93, .18);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 7px 18px rgba(37,99,235,.22);
 }
 
 .sidebar-install-btn:hover {
-  background: linear-gradient(135deg, #0b9284, #08766d);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
 /* Barra inferior */
 
 .mobile-bottom-nav {
-  background: linear-gradient(135deg, #004c45, #003b35) !important;
-  box-shadow: 0 12px 30px rgba(0, 59, 53, .24) !important;
+  background: linear-gradient(135deg, #0b1b33, #081426) !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.30) !important;
   border: 1px solid rgba(255, 255, 255, .08);
   backdrop-filter: blur(12px);
 }

@@ -378,3 +378,262 @@ tbody tr:hover{background:#f7faf8}
 
 /* O menu também funciona no computador: fica fechado até tocar nos três pontos. */
 body.menu-open{overflow:hidden}
+
+/* =========================================================
+   PORTAL JM — NOVA IDENTIDADE VISUAL 2026
+   Apenas apresentação: paleta, contraste, espaçamento e
+   responsividade. Não altera rotas, login ou regras de negócio.
+   Paleta: preto + cinza + azul-marinho + azul escuro + azul claro.
+========================================================= */
+:root{
+  --green:#3b82f6;
+  --green-dark:#1d4ed8;
+  --green-soft:#dbeafe;
+  --green-hover:#bfdbfe;
+  --black:#f8fafc;
+  --dark:#0b1220;
+  --text:#e5edf7;
+  --muted:#9aa9bc;
+  --bg:#070d17;
+  --surface:#111c2d;
+  --border:#26364d;
+  --danger:#f87171;
+  --danger-soft:#351a22;
+  --shadow:0 10px 28px rgba(0,0,0,.22);
+  --radius:16px;
+}
+
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--text)}
+a{color:#60a5fa}
+a:hover{color:#93c5fd}
+
+/* Topo: compacto, escuro e sem espaço excessivo */
+.topbar{
+  height:64px;
+  padding:0 18px;
+  background:#0b1220;
+  border-bottom:1px solid #1d2b40;
+  box-shadow:0 4px 18px rgba(0,0,0,.18);
+}
+.menu-toggle{color:#dbe7f5}
+.menu-toggle:hover{background:#17243a;color:#7dd3fc}
+.menu-toggle:active{background:#20324e}
+
+/* Menu lateral */
+.side-menu{
+  width:min(340px,90vw);
+  background:#0b1220;
+  color:#e7eef7;
+  box-shadow:18px 0 42px rgba(0,0,0,.42);
+  border-right:1px solid #1e3049;
+}
+.side-brand{
+  min-height:82px;
+  padding:16px 18px;
+  border-bottom:1px solid #1d2b40;
+}
+.side-logo{
+  width:44px;height:44px;
+  border-radius:13px;
+  background:#2563eb;
+  color:#fff;
+  box-shadow:0 6px 18px rgba(37,99,235,.24);
+}
+.side-brand small{color:#8fa1b8}
+.menu-close{color:#8fa1b8}
+.menu-close:hover{background:#17243a;color:#fff}
+.side-area{
+  margin:14px 14px 8px;
+  padding:10px 12px;
+  border-radius:10px;
+  color:#bfdbfe;
+  background:#13233a;
+  border:1px solid #29456a;
+}
+.side-nav{gap:4px;padding:5px 10px 12px}
+.side-link{
+  min-height:46px;
+  padding:10px 13px;
+  border-radius:10px;
+  color:#c3cfdf;
+}
+.side-link span{color:#7f93ad}
+.side-link:hover{background:#16253b;color:#fff}
+.side-link:hover span{color:#7dd3fc}
+.side-link.active{background:#2563eb;color:#fff;box-shadow:0 5px 16px rgba(37,99,235,.22)}
+.side-link.active span{color:#fff}
+.side-bottom{padding:14px 16px 18px;border-top:1px solid #1d2b40}
+.user-avatar{background:#2563eb;color:#fff}
+.side-user strong{color:#f8fafc}
+.side-user small{color:#8fa1b8}
+.side-logout{border-color:#26364d;background:#111c2d;color:#dbe7f5}
+.side-logout:hover{background:#17243a}
+.side-install:hover{background:#16253b;color:#fff}
+.menu-overlay{background:rgba(2,6,14,.68)}
+
+/* Conteúdo */
+.app-authenticated .site-main{
+  min-height:calc(100vh - 64px);
+  padding:82px clamp(16px,3vw,34px) 38px;
+}
+.site-footer{color:#71839b}
+
+.card,.panel,.box,.content-card,.dashboard-card{
+  background:#111c2d;
+  border-color:#26364d;
+  box-shadow:var(--shadow);
+}
+.card{padding:24px}
+
+/* Botões: azul claro com texto escuro para contraste */
+.btn{
+  min-height:44px;
+  padding:10px 17px;
+  border:1px solid #60a5fa;
+  border-radius:11px;
+  background:#60a5fa;
+  color:#07111f;
+  font-weight:800;
+  box-shadow:0 7px 18px rgba(37,99,235,.18);
+}
+.btn:hover{background:#93c5fd;border-color:#93c5fd;color:#07111f}
+.btn.secondary{background:#17243a;color:#bfdbfe;border-color:#31547d}
+.btn.secondary:hover{background:#20324e;border-color:#4b76a5;color:#dbeafe}
+
+/* Formulários */
+.auth label,.wide label,.form-grid label,.question-editor label{color:#dce7f4}
+input,select,textarea{
+  border-color:#31445e;
+  background:#0d1727;
+  color:#e8f0f8;
+}
+input::placeholder,textarea::placeholder{color:#71839b}
+input:focus,select:focus,textarea:focus{
+  border-color:#60a5fa;
+  box-shadow:0 0 0 3px rgba(96,165,250,.16);
+}
+select option{background:#0d1727;color:#e8f0f8}
+.google{border-color:#2c3e56;background:#17243a;color:#e5edf7}
+
+/* Painel do professor */
+.admin-shell,.student-shell{max-width:1220px;padding:0 0 34px}
+.admin-hero,.admin-page-head,.section-head{gap:24px;margin:0 0 22px}
+.admin-hero{
+  padding:28px clamp(20px,3vw,34px);
+  border:1px solid #263b57;
+  border-radius:20px;
+  background:#101c2e;
+  box-shadow:0 14px 34px rgba(0,0,0,.24);
+  align-items:center;
+}
+.admin-hero:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.admin-hero h1,.admin-page-head h1,.section-head h1{color:#f8fafc}
+.admin-hero p,.admin-page-head p{color:#9fb0c4}
+.eyebrow{color:#7dd3fc}
+.admin-primary{background:#60a5fa;color:#07111f}
+.admin-primary:hover{background:#93c5fd;color:#07111f}
+
+/* Navegação */
+.teacher-nav{gap:9px;margin:-2px 0 24px}
+.teacher-nav-item{
+  min-height:44px;
+  padding:9px 13px;
+  border:1px solid #293b55;
+  border-radius:11px;
+  background:#111c2d;
+  color:#aebdd0;
+  box-shadow:0 5px 15px rgba(0,0,0,.12);
+}
+.teacher-nav-item:hover{color:#dbeafe;border-color:#3d628f;background:#17243a}
+.teacher-nav-item.active{color:#07111f;border-color:#60a5fa;background:#60a5fa}
+
+/* Estatísticas */
+.admin-stats{gap:14px;margin-bottom:30px}
+.admin-stat{
+  min-height:104px;
+  padding:17px 18px;
+  border-color:#26364d;
+  background:#111c2d;
+  box-shadow:0 9px 24px rgba(0,0,0,.18);
+  border-radius:16px;
+}
+.admin-stat span{color:#7dd3fc}
+.admin-stat strong{color:#f8fafc}
+.admin-stat small{color:#91a2b7}
+
+.admin-section-title h2{color:#f1f5f9}
+
+/* Ações */
+.admin-action-card{
+  padding:18px;
+  border-color:#26364d;
+  border-radius:16px;
+  background:#111c2d;
+  color:#dfe8f3;
+  box-shadow:0 9px 24px rgba(0,0,0,.18);
+}
+.admin-action-card:hover{border-color:#3b5f8b;background:#16243a;color:#f8fafc;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+.admin-action-card.featured{border-color:#315a87;background:#13233a}
+.action-icon{background:#172d49;color:#7dd3fc;border-color:#294b72}
+.admin-action-card h3{color:#f8fafc}
+.admin-action-card p{color:#94a6bb}
+.arrow{color:#7dd3fc;background:#172d49}
+
+.teacher-tip{border-color:#293e59;background:#101c2e;color:#9fb0c4}
+.area-pill{border-color:#315a87;background:#172d49;color:#bfdbfe}
+
+/* Tabelas */
+table{background:#111c2d;border-color:#2a3b53}
+th{background:#18263a;color:#dbe7f5}
+th,td{border-color:#27384f}
+td{color:#d5dfeb}
+tbody tr:hover{background:#16243a}
+
+.badge{background:#172d49;color:#bfdbfe}
+.choice{background:#111c2d;border-color:#2b3e58;color:#dbe7f5}
+.choice:hover{border-color:#4a77a8;background:#172d49}
+.file-preview{background:#0e1828;border-color:#293c56}
+.material-mini{border-color:#293c56;color:#dbe7f5}
+.progress-track{background:#22324a}
+.progress-fill{background:#60a5fa}
+
+.flash.error{background:#351a22;color:#fecaca;border-color:#6f303c}
+.flash.success{background:#102b27;color:#bbf7d0;border-color:#24594d}
+.danger{background:#351a22;color:#fca5a5}
+
+/* Ajuste responsivo: nada fica encostado nas bordas */
+@media(max-width:900px){
+  .app-authenticated .site-main{padding:78px 16px 30px}
+  .admin-hero{padding:24px 22px}
+}
+@media(max-width:700px){
+  .topbar{height:58px;padding:0 10px}
+  .app-authenticated .site-main{min-height:calc(100vh - 58px);padding:72px 12px 26px}
+  .side-menu{width:min(88vw,330px)}
+  .side-brand{min-height:74px}
+  .admin-shell,.student-shell{padding-bottom:18px}
+  .admin-hero{padding:21px 18px;border-radius:18px;gap:16px}
+  .admin-hero h1{font-size:clamp(1.7rem,8vw,2.2rem);line-height:1.1}
+  .admin-hero p{font-size:.92rem;line-height:1.48}
+  .admin-primary{width:100%}
+  .teacher-nav{gap:8px;margin-bottom:20px}
+  .teacher-nav-item{flex:1 1 calc(50% - 8px);justify-content:center;min-width:0;padding:9px 8px;font-size:.86rem}
+  .admin-stats{gap:10px}
+  .admin-stat{min-height:88px;padding:13px 11px;border-radius:14px}
+  .admin-stat strong{font-size:1.35rem}
+  .admin-stat small{font-size:.76rem}
+  .admin-actions-grid{gap:11px}
+  .admin-action-card{padding:14px;border-radius:14px}
+}
+@media(max-width:380px){
+  .app-authenticated .site-main{padding-left:10px;padding-right:10px}
+  .teacher-nav-item{flex-basis:100%}
+  .admin-stats{gap:8px}
+  .admin-stat{padding:12px 9px}
+}
